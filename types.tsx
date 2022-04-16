@@ -6,7 +6,6 @@ import {
   NavigatorScreenParams,
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import Colors from "./constants/Colors";
 
 declare global {
   namespace ReactNavigation {
@@ -18,6 +17,7 @@ export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
   NotFound: undefined;
+  AddCard: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 
 import Colors from "../constants/Colors";
-import useColorScheme from "./useColorScheme";
+import { useAppSelector } from "../redux/hooks";
 
 function useTheme() {
-  const colorScheme = useColorScheme();
+  const { isDark, appearance } = useAppSelector((state) => state.appTheme);
   const [theme, setTheme] = useState(Colors.light);
 
   useEffect(() => {
-    if (colorScheme === "light") {
-      setTheme(Colors.light);
-    } else {
+    if (isDark) {
       setTheme(Colors.dark);
+    } else {
+      setTheme(Colors.light);
     }
-  }, [colorScheme, Colors]);
+  }, [isDark, Colors, appearance]);
 
   return theme;
 }

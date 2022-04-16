@@ -1,11 +1,14 @@
-import { StyleSheet } from "react-native";
+import { StatusBar, StyleSheet } from "react-native";
 
 import EditScreenInfo from "../components/EditScreenInfo";
 import { Text, View } from "../components/Themed";
 
-export default function ModalScreen() {
+export default function ModalScreen(props: any) {
   return (
     <View style={styles.container}>
+      <View>
+        <Text>Hello</Text>
+      </View>
       <Text style={styles.title}>Modal</Text>
       <View
         style={styles.separator}
@@ -21,7 +24,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    // justifyContent: "center",
+    // paddingTop: StatusBar.currentHeight ,
   },
   title: {
     fontSize: 20,

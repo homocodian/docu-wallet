@@ -19,24 +19,29 @@ import Documents from "../screens/Documents";
 import Notes from "../screens/Notes";
 import useTheme from "../hooks/useTheme";
 import Colors from "../constants/Colors";
+import AppBar from "../components/AppBar";
+import { useAppSelector } from "../redux/hooks";
+import AddCard from "../screens/AddCard";
+import AddCardHeader from "../components/AddCardHeader";
 
 export default function Navigation({
   ColorScheme,
 }: {
   ColorScheme: ColorSchemeName;
 }) {
+  const isDark = useAppSelector((state) => state.appTheme.isDark);
   const darkTheme = {
     ...DarkTheme,
     colors: {
       ...DarkTheme.colors,
       background: Colors.dark.background,
-      border: "red",
     },
   };
+
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
-      theme={ColorScheme === "dark" ? darkTheme : DefaultTheme}
+      theme={isDark ? darkTheme : DefaultTheme}
     >
       <RootNavigator />
     </NavigationContainer>
@@ -52,7 +57,18 @@ function RootNavigator() {
       <Stack.Screen
         name="Root"
         component={TopTabNavigator}
-        options={{ headerShown: false }}
+        options={{
+          headerShown: true,
+          header: (props) => <AppBar {...props} />,
+        }}
+      />
+      <Stack.Screen
+        name="AddCard"
+        component={AddCard}
+        options={{
+          headerShown: true,
+          header: (props) => <AddCardHeader {...props} />,
+        }}
       />
       <Stack.Screen
         name="NotFound"
