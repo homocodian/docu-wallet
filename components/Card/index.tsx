@@ -42,7 +42,11 @@ function Card({ theme, item }: CardProps) {
       return;
     }
 
-    const pickerResult = await ImagePicker.launchImageLibraryAsync();
+    const pickerResult = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: true,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      aspect: [16, 9],
+    });
 
     if (pickerResult.cancelled) {
       return;
@@ -73,7 +77,11 @@ function Card({ theme, item }: CardProps) {
       return;
     }
 
-    const captureResult = await ImagePicker.launchCameraAsync();
+    const captureResult = await ImagePicker.launchCameraAsync({
+      aspect: [16, 9],
+      allowsEditing: true,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    });
 
     if (captureResult.cancelled) {
       return;
