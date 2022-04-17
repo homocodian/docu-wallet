@@ -8,7 +8,7 @@ import { RootTabScreenProps } from "../types";
 import useColorScheme from "../hooks/useColorScheme";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { getIsDark } from "../redux/features/appTheme/appThemeSlice";
-import Documents from "../components/Documents";
+import CardsList from "../components/CardsList";
 
 function Cards({ navigation }: RootTabScreenProps<"Cards">) {
   const theme = useTheme();
@@ -40,7 +40,7 @@ function Cards({ navigation }: RootTabScreenProps<"Cards">) {
         style={isDarkMode ? "light" : "dark"}
         backgroundColor={theme.primary}
       />
-      <Documents theme={theme} navigation={navigation} />
+      <CardsList theme={theme} navigation={navigation} />
     </Fragment>
   );
 }

@@ -14,11 +14,11 @@ import { AntDesign } from "@expo/vector-icons";
 
 import Card from "../Card";
 import { data } from "../../utils/data";
-import { DocumentsProps } from "./types";
+import { CardsListProps } from "./types";
 import { CardDetails } from "../../types";
 import { isSmallDevice, window } from "../../constants/Layout";
 
-const Documents = ({ navigation, theme }: DocumentsProps) => {
+const CardsList = ({ navigation, theme }: CardsListProps) => {
   const [showFabButton, setShowFabButton] = useBoolean(true);
 
   const hideFabButton = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -85,7 +85,7 @@ const Documents = ({ navigation, theme }: DocumentsProps) => {
   );
 };
 
-export default Documents;
+export default CardsList;
 
 const styles = StyleSheet.create({
   container: {

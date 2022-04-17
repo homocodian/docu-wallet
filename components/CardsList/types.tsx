@@ -4,7 +4,7 @@ import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { RootStackParamList, RootTabParamList } from "../../types";
 import { Theme } from "../Card/types";
 
-export type DocumentsProps = {
+export type CardsListProps = {
   navigation: CompositeNavigationProp<
     MaterialTopTabNavigationProp<RootTabParamList, "Cards", undefined>,
     NativeStackNavigationProp<

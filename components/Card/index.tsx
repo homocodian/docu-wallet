@@ -18,7 +18,7 @@ import * as ImagePicker from "expo-image-picker";
 
 import { useState } from "react";
 import { CardProps } from "./types";
-import { shareCard, copyUid } from "../../utils/cardScreenHelper";
+import { shareCard, copyToClipboard } from "../../utils/";
 import ChooseDialog from "./ChooseDialog";
 
 function Card({ theme, item }: CardProps) {
@@ -128,7 +128,7 @@ function Card({ theme, item }: CardProps) {
         <Pressable
           style={styles.copyButton}
           pressEffectColor="#ccc"
-          onPress={() => copyUid(item.uid)}
+          onPress={() => copyToClipboard(item.uid)}
         >
           <Text style={{ color: theme.secondaryText }}>Copy uid </Text>
           {/* @ts-ignore */}
