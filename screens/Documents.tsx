@@ -1,35 +1,33 @@
-import { StyleSheet } from "react-native";
+import { Fragment, useEffect } from "react";
 
-import { Text, View } from "../components/Themed";
+import { StatusBar } from "expo-status-bar";
+
 import useTheme from "../hooks/useTheme";
+import { RootTabScreenProps } from "../types";
+import useColorScheme from "../hooks/useColorScheme";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { getIsDark } from "../redux/features/appTheme/appThemeSlice";
+import DocumentList from "../components/DocumentList";
 
-export default function Documents() {
+function Documents({ navigation }: RootTabScreenProps<"Cards">) {
   const theme = useTheme();
+  const dispatch = useAppDispatch();
+  const nativeColorScheme = useColorScheme();
+  const isDarkMode = useAppSelector((state) => state.appTheme.isDark);
+
+  useEffect(() => {
+    dispatch(getIsDark(nativeColorScheme));
+  }, [nativeColorScheme]);
+
   return (
-    <View style={{ ...styles.container, backgroundColor: theme.background }}>
-      <Text style={{ ...styles.title, color: theme.text }}>Tab Two</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
+    <Fragment>
+      <StatusBar
+        style={isDarkMode ? "light" : "dark"}
+        backgroundColor={theme.primary}
       />
-    </View>
+      <DocumentList theme={theme} navigation={navigation} />
+    </Fragment>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
-});
+export default Documents;

@@ -8,15 +8,21 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import useTheme from "../../hooks/useTheme";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 
-const AddCardHeader = ({ navigation }: NativeStackHeaderProps) => {
+const NavHeader = ({
+  title,
+  headerProps: { navigation },
+}: {
+  headerProps: NativeStackHeaderProps;
+  title: string;
+}) => {
   const theme = useTheme();
 
   return (
     <SafeAreaView>
       <View style={{ ...styles.container, backgroundColor: theme.background }}>
-        <Text style={{ ...styles.title, color: theme.text }}>Add Card</Text>
+        <Text style={{ ...styles.title, color: theme.text }}>{title}</Text>
         <IconButton
-          icon={(props) => (
+          icon={() => (
             // @ts-ignore
             <AntDesign name="close" size={20} color={theme.tint} />
           )}
@@ -29,7 +35,7 @@ const AddCardHeader = ({ navigation }: NativeStackHeaderProps) => {
   );
 };
 
-export default AddCardHeader;
+export default NavHeader;
 
 const styles = StyleSheet.create({
   container: {

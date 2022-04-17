@@ -12,13 +12,13 @@ import { Caption } from "react-native-paper";
 import { IconButton, useBoolean } from "@react-native-material/core";
 import { AntDesign } from "@expo/vector-icons";
 
-import Card from "../Card";
-import { data } from "../../utils/data";
-import { CardsListProps } from "./types";
-import { CardDetails } from "../../types";
+import { fakeData } from "../../utils/fakeDataDocument";
+import { DocumentListProps } from "./types";
 import { isSmallDevice, window } from "../../constants/Layout";
+import DocumentCard from "../DocumentCard";
+import { CardItem } from "../DocumentCard/types";
 
-const CardsList = ({ navigation, theme }: CardsListProps) => {
+const DocumentList = ({ navigation, theme }: DocumentListProps) => {
   const [showFabButton, setShowFabButton] = useBoolean(true);
 
   const hideFabButton = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
@@ -31,8 +31,8 @@ const CardsList = ({ navigation, theme }: CardsListProps) => {
     }
   };
 
-  const RenderItem = ({ item }: ListRenderItemInfo<CardDetails>) => {
-    return <Card theme={theme} item={item} />;
+  const RenderItem = ({ item }: ListRenderItemInfo<CardItem>) => {
+    return <DocumentCard theme={theme} item={item} />;
   };
 
   function EmptyComponent() {
@@ -45,7 +45,7 @@ const CardsList = ({ navigation, theme }: CardsListProps) => {
             color: theme.secondaryText,
           }}
         >
-          No card to show, add one to see here!
+          No document to show, add one to see here!
         </Caption>
       </View>
     );
@@ -55,7 +55,7 @@ const CardsList = ({ navigation, theme }: CardsListProps) => {
     <Fragment>
       <View style={styles.container}>
         <FlatList
-          data={data}
+          data={fakeData}
           renderItem={RenderItem}
           keyExtractor={(data) => data.id}
           showsVerticalScrollIndicator={false}
@@ -78,14 +78,14 @@ const CardsList = ({ navigation, theme }: CardsListProps) => {
             <AntDesign name="plus" size={26} color={theme.tint} />
           )}
           style={{ ...styles.fab, backgroundColor: theme.primary }}
-          onPress={() => navigation.navigate("AddCard")}
+          onPress={() => navigation.navigate("AddDocument")}
         />
       )}
     </Fragment>
   );
 };
 
-export default React.memo(CardsList);
+export default React.memo(DocumentList);
 
 const styles = StyleSheet.create({
   container: {
