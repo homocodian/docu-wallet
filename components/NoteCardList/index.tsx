@@ -8,7 +8,6 @@ import {
   View,
 } from "react-native";
 
-import { useBoolean } from "@react-native-material/core";
 import { Caption } from "react-native-paper";
 
 import FAB from "../FAB";
@@ -41,8 +40,6 @@ const data = [
 ];
 
 const NoteCardList = ({ theme, navigation }: NoteCardListProps) => {
-  const [showFabButton, setShowFabButton] = useBoolean(false);
-
   function EmptyComponent() {
     return (
       <View style={styles.emptyComponent}>
@@ -59,16 +56,6 @@ const NoteCardList = ({ theme, navigation }: NoteCardListProps) => {
     );
   }
 
-  const hideFabButton = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (event.nativeEvent.contentOffset.y >= 200) {
-      if (showFabButton === false) return;
-      setShowFabButton.off();
-    } else {
-      if (showFabButton === true) return;
-      setShowFabButton.on();
-    }
-  };
-
   return (
     <Fragment>
       <FlatList
@@ -82,11 +69,9 @@ const NoteCardList = ({ theme, navigation }: NoteCardListProps) => {
             title={item.title}
           />
         )}
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 25 }}
+        contentContainerStyle={{ flexGrow: 1, paddingBottom: 88 }}
         keyExtractor={(item) => item.id}
         ListEmptyComponent={EmptyComponent}
-        onScroll={hideFabButton}
-        scrollEventThrottle={50}
       />
       <FAB theme={theme} onPress={() => navigation.navigate("AddNote")} />
     </Fragment>

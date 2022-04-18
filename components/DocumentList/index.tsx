@@ -9,7 +9,6 @@ import {
 import React, { Fragment } from "react";
 
 import { Caption } from "react-native-paper";
-import { useBoolean } from "@react-native-material/core";
 
 import { fakeData } from "../../utils/fakeDataDocument";
 import { DocumentListProps } from "./types";
@@ -19,18 +18,6 @@ import { CardItem } from "../DocumentCard/types";
 import FAB from "../FAB";
 
 const DocumentList = ({ navigation, theme }: DocumentListProps) => {
-  const [showFabButton, setShowFabButton] = useBoolean(true);
-
-  const hideFabButton = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (event.nativeEvent.contentOffset.y >= 200) {
-      if (showFabButton === false) return;
-      setShowFabButton.off();
-    } else {
-      if (showFabButton === true) return;
-      setShowFabButton.on();
-    }
-  };
-
   const RenderItem = ({ item }: ListRenderItemInfo<CardItem>) => {
     return <DocumentCard theme={theme} item={item} />;
   };
@@ -60,20 +47,19 @@ const DocumentList = ({ navigation, theme }: DocumentListProps) => {
           keyExtractor={(data) => data.id}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          onScroll={hideFabButton}
-          scrollEventThrottle={50}
           style={{
             width: "100%",
             paddingHorizontal: 15,
             flex: 1,
           }}
+          contentContainerStyle={{
+            paddingBottom: 72,
+          }}
           ListEmptyComponent={EmptyComponent}
         />
       </View>
       {/* fab button */}
-      {showFabButton && (
-        <FAB theme={theme} onPress={() => navigation.navigate("AddDocument")} />
-      )}
+      <FAB theme={theme} onPress={() => navigation.navigate("AddDocument")} />
     </Fragment>
   );
 };

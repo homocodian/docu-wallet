@@ -9,7 +9,6 @@ import {
 import React, { Fragment } from "react";
 
 import { Caption } from "react-native-paper";
-import { useBoolean } from "@react-native-material/core";
 
 import Card from "../Card";
 import { data } from "../../utils/data";
@@ -19,18 +18,6 @@ import { isSmallDevice, window } from "../../constants/Layout";
 import FAB from "../FAB";
 
 const CardsList = ({ navigation, theme }: CardsListProps) => {
-  const [showFabButton, setShowFabButton] = useBoolean(true);
-
-  const hideFabButton = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    if (event.nativeEvent.contentOffset.y >= 200) {
-      if (showFabButton === false) return;
-      setShowFabButton.off();
-    } else {
-      if (showFabButton === true) return;
-      setShowFabButton.on();
-    }
-  };
-
   const RenderItem = ({ item }: ListRenderItemInfo<CardDetails>) => {
     return <Card theme={theme} item={item} />;
   };
@@ -60,20 +47,19 @@ const CardsList = ({ navigation, theme }: CardsListProps) => {
           keyExtractor={(data) => data.id}
           showsVerticalScrollIndicator={false}
           showsHorizontalScrollIndicator={false}
-          onScroll={hideFabButton}
-          scrollEventThrottle={50}
           style={{
             width: "100%",
             paddingHorizontal: 15,
             flex: 1,
           }}
+          contentContainerStyle={{
+            paddingBottom: 72,
+          }}
           ListEmptyComponent={EmptyComponent}
         />
       </View>
       {/* fab button */}
-      {showFabButton && (
-        <FAB theme={theme} onPress={() => navigation.navigate("AddCard")} />
-      )}
+      <FAB theme={theme} onPress={() => navigation.navigate("AddCard")} />
     </Fragment>
   );
 };
