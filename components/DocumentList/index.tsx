@@ -1,11 +1,4 @@
-import {
-  FlatList,
-  ListRenderItemInfo,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  StyleSheet,
-  View,
-} from "react-native";
+import { FlatList, ListRenderItemInfo, StyleSheet, View } from "react-native";
 import React, { Fragment } from "react";
 
 import { Caption } from "react-native-paper";
@@ -15,9 +8,8 @@ import { DocumentListProps } from "./types";
 import { isSmallDevice, window } from "../../constants/Layout";
 import DocumentCard from "../DocumentCard";
 import { CardItem } from "../DocumentCard/types";
-import FAB from "../FAB";
 
-const DocumentList = ({ navigation, theme }: DocumentListProps) => {
+const DocumentList = ({ theme }: DocumentListProps) => {
   const RenderItem = ({ item }: ListRenderItemInfo<CardItem>) => {
     return <DocumentCard theme={theme} item={item} />;
   };
@@ -39,28 +31,24 @@ const DocumentList = ({ navigation, theme }: DocumentListProps) => {
   }
 
   return (
-    <Fragment>
-      <View style={styles.container}>
-        <FlatList
-          data={fakeData}
-          renderItem={RenderItem}
-          keyExtractor={(data) => data.id}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          style={{
-            width: "100%",
-            paddingHorizontal: 15,
-            flex: 1,
-          }}
-          contentContainerStyle={{
-            paddingBottom: 72,
-          }}
-          ListEmptyComponent={EmptyComponent}
-        />
-      </View>
-      {/* fab button */}
-      <FAB theme={theme} onPress={() => navigation.navigate("AddDocument")} />
-    </Fragment>
+    <View style={styles.container}>
+      <FlatList
+        data={fakeData}
+        renderItem={RenderItem}
+        keyExtractor={(data) => data.id}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        style={{
+          width: "100%",
+          paddingHorizontal: 15,
+          flex: 1,
+        }}
+        contentContainerStyle={{
+          paddingBottom: 72,
+        }}
+        ListEmptyComponent={EmptyComponent}
+      />
+    </View>
   );
 };
 

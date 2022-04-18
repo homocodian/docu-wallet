@@ -9,6 +9,7 @@ import useColorScheme from "../hooks/useColorScheme";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { getIsDark } from "../redux/features/appTheme/appThemeSlice";
 import CardsList from "../components/CardsList";
+import FAB from "../components/FAB";
 
 function Cards({ navigation }: RootTabScreenProps<"Cards">) {
   const theme = useTheme();
@@ -40,7 +41,10 @@ function Cards({ navigation }: RootTabScreenProps<"Cards">) {
         style={isDarkMode ? "light" : "dark"}
         backgroundColor={theme.primary}
       />
-      <CardsList theme={theme} navigation={navigation} />
+      <CardsList theme={theme} />
+
+      {/* fab button */}
+      <FAB theme={theme} onPress={() => navigation.navigate("AddCard")} />
     </Fragment>
   );
 }

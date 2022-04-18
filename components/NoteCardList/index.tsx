@@ -10,7 +10,6 @@ import {
 
 import { Caption } from "react-native-paper";
 
-import FAB from "../FAB";
 import NoteCard from "../NoteCard";
 import { NoteCardListProps } from "./types";
 import { NoteCardProps } from "../NoteCard/types";
@@ -39,7 +38,7 @@ const data = [
   },
 ];
 
-const NoteCardList = ({ theme, navigation }: NoteCardListProps) => {
+const NoteCardList = ({ theme }: NoteCardListProps) => {
   function EmptyComponent() {
     return (
       <View style={styles.emptyComponent}>
@@ -57,24 +56,21 @@ const NoteCardList = ({ theme, navigation }: NoteCardListProps) => {
   }
 
   return (
-    <Fragment>
-      <FlatList
-        style={{ ...styles.container, backgroundColor: theme.background }}
-        data={data}
-        renderItem={({ item }) => (
-          <RenderItem
-            theme={theme}
-            id={item.id}
-            note={item.note}
-            title={item.title}
-          />
-        )}
-        contentContainerStyle={{ flexGrow: 1, paddingBottom: 88 }}
-        keyExtractor={(item) => item.id}
-        ListEmptyComponent={EmptyComponent}
-      />
-      <FAB theme={theme} onPress={() => navigation.navigate("AddNote")} />
-    </Fragment>
+    <FlatList
+      style={{ ...styles.container, backgroundColor: theme.background }}
+      data={data}
+      renderItem={({ item }) => (
+        <RenderItem
+          theme={theme}
+          id={item.id}
+          note={item.note}
+          title={item.title}
+        />
+      )}
+      contentContainerStyle={{ flexGrow: 1, paddingBottom: 88 }}
+      keyExtractor={(item) => item.id}
+      ListEmptyComponent={EmptyComponent}
+    />
   );
 };
 

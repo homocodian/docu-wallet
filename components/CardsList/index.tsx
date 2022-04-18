@@ -15,9 +15,8 @@ import { data } from "../../utils/data";
 import { CardsListProps } from "./types";
 import { CardDetails } from "../../types";
 import { isSmallDevice, window } from "../../constants/Layout";
-import FAB from "../FAB";
 
-const CardsList = ({ navigation, theme }: CardsListProps) => {
+const CardsList = ({ theme }: CardsListProps) => {
   const RenderItem = ({ item }: ListRenderItemInfo<CardDetails>) => {
     return <Card theme={theme} item={item} />;
   };
@@ -39,28 +38,24 @@ const CardsList = ({ navigation, theme }: CardsListProps) => {
   }
 
   return (
-    <Fragment>
-      <View style={styles.container}>
-        <FlatList
-          data={data}
-          renderItem={RenderItem}
-          keyExtractor={(data) => data.id}
-          showsVerticalScrollIndicator={false}
-          showsHorizontalScrollIndicator={false}
-          style={{
-            width: "100%",
-            paddingHorizontal: 15,
-            flex: 1,
-          }}
-          contentContainerStyle={{
-            paddingBottom: 72,
-          }}
-          ListEmptyComponent={EmptyComponent}
-        />
-      </View>
-      {/* fab button */}
-      <FAB theme={theme} onPress={() => navigation.navigate("AddCard")} />
-    </Fragment>
+    <View style={styles.container}>
+      <FlatList
+        data={data}
+        renderItem={RenderItem}
+        keyExtractor={(data) => data.id}
+        showsVerticalScrollIndicator={false}
+        showsHorizontalScrollIndicator={false}
+        style={{
+          width: "100%",
+          paddingHorizontal: 15,
+          flex: 1,
+        }}
+        contentContainerStyle={{
+          paddingBottom: 72,
+        }}
+        ListEmptyComponent={EmptyComponent}
+      />
+    </View>
   );
 };
 

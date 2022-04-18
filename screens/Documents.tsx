@@ -8,6 +8,7 @@ import useColorScheme from "../hooks/useColorScheme";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { getIsDark } from "../redux/features/appTheme/appThemeSlice";
 import DocumentList from "../components/DocumentList";
+import FAB from "../components/FAB";
 
 function Documents({ navigation }: RootTabScreenProps<"Cards">) {
   const theme = useTheme();
@@ -25,7 +26,9 @@ function Documents({ navigation }: RootTabScreenProps<"Cards">) {
         style={isDarkMode ? "light" : "dark"}
         backgroundColor={theme.primary}
       />
-      <DocumentList theme={theme} navigation={navigation} />
+      <DocumentList theme={theme} />
+      {/* fab button */}
+      <FAB theme={theme} onPress={() => navigation.navigate("AddDocument")} />
     </Fragment>
   );
 }
