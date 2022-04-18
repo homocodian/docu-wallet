@@ -32,7 +32,7 @@ const AddNote = () => {
       </Text>
       <Divider
         style={{
-          marginVertical: 15,
+          marginTop: 15,
           height: 2,
           backgroundColor: isDarkMode ? "#656262" : "#C4C4C4",
         }}
@@ -63,11 +63,12 @@ const styles = StyleSheet.create({
     paddingTop: 53,
   },
   titleInput: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: "600",
   },
   noteInput: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "600",
+    paddingTop: 15,
   },
 });
