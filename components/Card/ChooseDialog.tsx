@@ -1,4 +1,6 @@
 import { Portal, List, Dialog } from "react-native-paper";
+import useTheme from "../../hooks/useTheme";
+import { useAppSelector } from "../../redux/hooks";
 
 import { ChooseDialogProps } from "./types";
 
@@ -8,6 +10,9 @@ const ChooseDialog = ({
   openImagePickerAsync,
   captureImageAsync,
 }: ChooseDialogProps) => {
+  const theme = useTheme();
+  const isDarkMode = useAppSelector((state) => state.appTheme.isDark);
+
   return (
     // @ts-ignore
     <Portal>
@@ -15,15 +20,28 @@ const ChooseDialog = ({
       <Dialog
         visible={visible}
         onDismiss={setVisible.off}
-        style={{ padding: 0 }}
+        theme={{
+          dark: isDarkMode,
+          colors: {
+            background: theme.background,
+            surface: theme.background,
+            text: theme.text,
+          },
+        }}
       >
-        <Dialog.Content style={{ padding: 0 }}>
+        <Dialog.Content>
           {/* @ts-ignore */}
           <List.Item
             title="Camera"
             onPress={() => {
               setVisible.off();
               captureImageAsync();
+            }}
+            theme={{
+              dark: isDarkMode,
+              colors: {
+                text: theme.text,
+              },
             }}
             left={(props) => <List.Icon icon="camera" {...props} />}
           />
@@ -33,6 +51,12 @@ const ChooseDialog = ({
             onPress={() => {
               setVisible.off();
               openImagePickerAsync();
+            }}
+            theme={{
+              dark: isDarkMode,
+              colors: {
+                text: theme.text,
+              },
             }}
             left={(props) => <List.Icon icon="google-photos" {...props} />}
           />

@@ -60,7 +60,9 @@ const ChooseAppearance = ({
       >
         {/* @ts-ignore */}
         <Dialog.Title>
-          <Headline style={{ color: theme.text }}>Choose Appearance</Headline>
+          <Headline style={{ color: theme.text, fontSize: 20 }}>
+            Choose Appearance
+          </Headline>
         </Dialog.Title>
         {/* @ts-ignore */}
         <Divider />
@@ -78,8 +80,9 @@ const ChooseAppearance = ({
                 value="system"
                 theme={{
                   colors: {
-                    text: theme.tint,
+                    text: theme.text,
                   },
+                  mode: "exact",
                 }}
               />
               <Text style={{ ...styles.spacedText, color: theme.text }}>
