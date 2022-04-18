@@ -74,7 +74,14 @@ const ChooseAppearance = ({
           >
             <View style={styles.row}>
               {/* @ts-ignore */}
-              <RadioButton value="system" />
+              <RadioButton
+                value="system"
+                theme={{
+                  colors: {
+                    text: theme.tint,
+                  },
+                }}
+              />
               <Text style={{ ...styles.spacedText, color: theme.text }}>
                 System
               </Text>
@@ -85,8 +92,7 @@ const ChooseAppearance = ({
                 value="light"
                 theme={{
                   colors: {
-                    accent: theme.tint,
-                    text: theme.text,
+                    text: theme.tint,
                   },
                   mode: "exact",
                 }}

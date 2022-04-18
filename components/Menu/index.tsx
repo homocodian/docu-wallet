@@ -3,10 +3,7 @@ import { StatusBar } from "react-native";
 
 import { useBoolean } from "@react-native-material/core";
 
-import {
-  Menu as DefaultMenu,
-  useTheme as usePaperTheme,
-} from "react-native-paper";
+import { Menu as DefaultMenu } from "react-native-paper";
 import { MenuProps } from "../../types";
 
 import useTheme from "../../hooks/useTheme";
@@ -17,16 +14,7 @@ function Menu({ button: Button, visible, setVisible }: MenuProps) {
   const [isAppearanceDialogOpen, setIsAppearanceDialogOpen] = useBoolean(false);
   const isDarkMode = useAppSelector((state) => state.appTheme.isDark);
 
-  const defaultTheme = useTheme();
-  const theme = usePaperTheme({
-    dark: isDarkMode,
-    mode: "exact",
-    colors: {
-      background: defaultTheme.background,
-      onSurface: defaultTheme.text,
-      accent: defaultTheme.tint,
-    },
-  });
+  const theme = useTheme();
 
   return (
     <Fragment>
@@ -37,7 +25,14 @@ function Menu({ button: Button, visible, setVisible }: MenuProps) {
         // @ts-ignore
         anchor={Button}
         statusBarHeight={StatusBar.currentHeight}
-        theme={theme}
+        theme={{
+          dark: isDarkMode,
+          colors: {
+            background: theme.background,
+          },
+          mode: "exact",
+        }}
+        contentStyle={{ backgroundColor: theme.background }}
       >
         {/* @ts-ignore */}
         <DefaultMenu.Item
@@ -46,6 +41,11 @@ function Menu({ button: Button, visible, setVisible }: MenuProps) {
             setIsAppearanceDialogOpen.on();
           }}
           title="Appearance"
+          theme={{
+            colors: {
+              text: theme.text,
+            },
+          }}
         />
       </DefaultMenu>
       <ChooseAppearance
