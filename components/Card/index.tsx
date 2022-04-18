@@ -109,10 +109,7 @@ function Card({ theme, item }: CardProps) {
           onPress={setChooseVisible.on}
           style={styles.placeholderContainer}
         >
-          <View style={styles.placeholder}>
-            {/* @ts-ignore */}
-            <Feather name="camera" size={32} color={theme.tint} />
-          </View>
+          <Image source={item.imageUrl} style={styles.image} />
         </DefaultPressable>
       ) : (
         <DefaultPressable

@@ -19,6 +19,7 @@ export type RootStackParamList = {
   NotFound: undefined;
   AddCard: undefined;
   AddDocument: undefined;
+  AddNote: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

@@ -24,6 +24,7 @@ import { useAppSelector } from "../redux/hooks";
 import AddCard from "../screens/AddCard";
 import NavHeader from "../components/NavHeader";
 import AddDocument from "../screens/AddDocument";
+import AddNote from "../screens/AddNote";
 
 export default function Navigation({
   ColorScheme,
@@ -76,8 +77,16 @@ function RootNavigator() {
         component={AddDocument}
         options={{
           headerShown: true,
+          header: (props) => <NavHeader title="Add Note" headerProps={props} />,
+        }}
+      />
+      <Stack.Screen
+        name="AddNote"
+        component={AddNote}
+        options={{
+          headerShown: true,
           header: (props) => (
-            <NavHeader title="Add Document" headerProps={props} />
+            <NavHeader title="Add Note" headerProps={props} back />
           ),
         }}
       />

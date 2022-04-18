@@ -9,14 +9,14 @@ import {
 import React, { Fragment } from "react";
 
 import { Caption } from "react-native-paper";
-import { IconButton, useBoolean } from "@react-native-material/core";
-import { AntDesign } from "@expo/vector-icons";
+import { useBoolean } from "@react-native-material/core";
 
 import { fakeData } from "../../utils/fakeDataDocument";
 import { DocumentListProps } from "./types";
 import { isSmallDevice, window } from "../../constants/Layout";
 import DocumentCard from "../DocumentCard";
 import { CardItem } from "../DocumentCard/types";
+import FAB from "../FAB";
 
 const DocumentList = ({ navigation, theme }: DocumentListProps) => {
   const [showFabButton, setShowFabButton] = useBoolean(true);
@@ -72,14 +72,7 @@ const DocumentList = ({ navigation, theme }: DocumentListProps) => {
       </View>
       {/* fab button */}
       {showFabButton && (
-        <IconButton
-          icon={() => (
-            // @ts-ignore
-            <AntDesign name="plus" size={26} color={theme.tint} />
-          )}
-          style={{ ...styles.fab, backgroundColor: theme.primary }}
-          onPress={() => navigation.navigate("AddDocument")}
-        />
+        <FAB theme={theme} onPress={() => navigation.navigate("AddDocument")} />
       )}
     </Fragment>
   );
@@ -92,15 +85,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  fab: {
-    position: "absolute",
-    bottom: 20,
-    right: 20,
-    elevation: 10,
-    height: 52,
-    width: 52,
-    borderRadius: 9999,
   },
   emptyComponent: {
     height: window.height,

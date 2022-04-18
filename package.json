@@ -24,6 +24,7 @@
     "@react-navigation/native": "^6.0.2",
     "@react-navigation/native-stack": "^6.1.0",
     "@reduxjs/toolkit": "^1.8.1",
+    "dayjs": "^1.11.1",
     "expo": "~44.0.0",
     "expo-asset": "~8.4.4",
     "expo-clipboard": "~2.1.0",

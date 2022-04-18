@@ -1,7 +1,4 @@
-import { StatusBar, StyleSheet } from "react-native";
-
-import EditScreenInfo from "../components/EditScreenInfo";
-import { Text, View } from "../components/Themed";
+import { StyleSheet, View, Text } from "react-native";
 
 export default function ModalScreen(props: any) {
   return (
@@ -10,12 +7,7 @@ export default function ModalScreen(props: any) {
         <Text>Hello</Text>
       </View>
       <Text style={styles.title}>Modal</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      />
-      <EditScreenInfo path="/screens/ModalScreen.tsx" />
+      <View style={styles.separator} />
     </View>
   );
 }
