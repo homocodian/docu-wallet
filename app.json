@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "document-keeper",
-    "slug": "document-keeper",
+    "name": "Docu Wallet",
+    "slug": "docu-wallet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -19,7 +19,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": false
     },
     "android": {
       "adaptiveIcon": {
@@ -29,6 +29,9 @@
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
-    }
+    },
+    "plugins": [
+      "@morrowdigital/watermelondb-expo-plugin"
+    ]
   }
 }

@@ -4,7 +4,7 @@ import toastMessage from "./ToastMessage";
 
 function copyToClipboard(text: string) {
   Clipboard.setString(text);
-  toastMessage("copied");
+  toastMessage("Text copied");
 }
 
 export default copyToClipboard;

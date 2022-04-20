@@ -1,19 +1,13 @@
-import { Fragment } from "react";
-import {
-  FlatList,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  StatusBar,
-  StyleSheet,
-  View,
-} from "react-native";
+import { FlatList, StatusBar, StyleSheet, View } from "react-native";
 
 import { Caption } from "react-native-paper";
+import withObservables from "@nozbe/with-observables";
 
 import NoteCard from "../NoteCard";
 import { NoteCardListProps } from "./types";
 import { NoteCardProps } from "../NoteCard/types";
 import { isSmallDevice, window } from "../../constants/Layout";
+import NoteDAO from "../../db/DAO/NoteDAO";
 
 const data = [
   {
@@ -38,7 +32,8 @@ const data = [
   },
 ];
 
-const NoteCardList = ({ theme }: NoteCardListProps) => {
+const NoteCardList = ({ theme, notes }: any) => {
+  console.log(notes);
   function EmptyComponent() {
     return (
       <View style={styles.emptyComponent}>
@@ -74,7 +69,11 @@ const NoteCardList = ({ theme }: NoteCardListProps) => {
   );
 };
 
-export default NoteCardList;
+const enhance = withObservables([], () => ({
+  notes: NoteDAO.observerNote(),
+}));
+
+export default enhance(NoteCardList);
 
 function RenderItem({ theme, id, note, title }: NoteCardProps) {
   return <NoteCard theme={theme} id={id} note={note} title={title} />;
