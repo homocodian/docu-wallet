@@ -1,5 +1,4 @@
 import { StyleSheet, Text, TextInput, View } from "react-native";
-import React from "react";
 
 import { StatusBar } from "expo-status-bar";
 import dayjs from "dayjs";
