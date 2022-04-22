@@ -6,6 +6,7 @@ import {
   NavigatorScreenParams,
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import Colors from "./constants/Colors";
 
 declare global {
   namespace ReactNavigation {
@@ -53,3 +54,5 @@ export type MenuProps = {
     readonly toggle: () => void;
   };
 };
+
+export type AppTheme = typeof Colors.light;

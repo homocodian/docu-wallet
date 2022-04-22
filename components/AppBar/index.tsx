@@ -35,7 +35,7 @@ const AppBar = (_props: NativeStackHeaderProps) => {
   return (
     <SafeAreaView>
       <DefaultAppBar
-        title="Document keeper"
+        title="Docu Wallet"
         titleStyle={{
           fontSize: 18,
         }}

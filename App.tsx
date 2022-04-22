@@ -1,6 +1,6 @@
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider as ReactNativePaperProvider } from "react-native-paper";
-import { Provider as ReduxProvider, useDispatch } from "react-redux";
+import { Provider as ReduxProvider } from "react-redux";
 
 import Navigation from "./navigation";
 import { store } from "./redux/store";

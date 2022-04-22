@@ -4,10 +4,10 @@ import { Caption } from "react-native-paper";
 import withObservables from "@nozbe/with-observables";
 
 import NoteCard from "../NoteCard";
-import { NoteCardListProps } from "./types";
 import { NoteCardProps } from "../NoteCard/types";
 import { isSmallDevice, window } from "../../constants/Layout";
-import NoteDAO from "../../db/DAO/NoteDAO";
+import NoteDAO from "../../db/dao/Note";
+import { AppTheme } from "../../types";
 
 const data = [
   {
@@ -32,8 +32,7 @@ const data = [
   },
 ];
 
-const NoteCardList = ({ theme, notes }: any) => {
-  console.log(notes);
+const NoteCardList = ({ theme, notes }: { theme: AppTheme; notes: any }) => {
   function EmptyComponent() {
     return (
       <View style={styles.emptyComponent}>
@@ -53,7 +52,7 @@ const NoteCardList = ({ theme, notes }: any) => {
   return (
     <FlatList
       style={{ ...styles.container, backgroundColor: theme.background }}
-      data={data}
+      data={notes}
       renderItem={({ item }) => (
         <RenderItem
           theme={theme}
@@ -62,7 +61,10 @@ const NoteCardList = ({ theme, notes }: any) => {
           title={item.title}
         />
       )}
-      contentContainerStyle={{ flexGrow: 1, paddingBottom: 88 }}
+      contentContainerStyle={{
+        flexGrow: 1,
+        paddingBottom: 88,
+      }}
       keyExtractor={(item) => item.id}
       ListEmptyComponent={EmptyComponent}
     />

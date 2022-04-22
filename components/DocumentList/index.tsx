@@ -42,6 +42,7 @@ const DocumentList = ({ theme }: DocumentListProps) => {
           width: "100%",
           paddingHorizontal: 15,
           flex: 1,
+          backgroundColor: theme.background,
         }}
         contentContainerStyle={{
           paddingBottom: 72,

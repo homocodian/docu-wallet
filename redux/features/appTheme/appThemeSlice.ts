@@ -1,6 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import useColorScheme from "../../../hooks/useColorScheme";
 
 import {
   Appearance,

@@ -15,7 +15,6 @@
   "dependencies": {
     "@babel/preset-env": "^7.16.11",
     "@expo/vector-icons": "^12.0.0",
-    "@morrowdigital/watermelondb-expo-plugin": "^1.0.0",
     "@nozbe/watermelondb": "^0.24.0",
     "@react-native-async-storage/async-storage": "~1.15.0",
     "@react-native-clipboard/clipboard": "^1.8.5",
@@ -35,7 +34,6 @@
     "expo-navigation-bar": "~1.1.1",
     "expo-sharing": "~10.1.0",
     "expo-splash-screen": "~0.14.0",
-    "expo-sqlite": "~10.1.0",
     "expo-status-bar": "~1.2.0",
     "expo-web-browser": "~10.1.0",
     "react": "17.0.1",

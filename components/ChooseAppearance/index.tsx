@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
 import {
@@ -14,32 +14,26 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { setAppAppearance } from "../../redux/features/appTheme/appThemeSlice";
 import useTheme from "../../hooks/useTheme";
 import useColorScheme from "../../hooks/useColorScheme";
-import useIsFirstRender from "../../hooks/useIsFirstRender";
 
 const ChooseAppearance = ({
   visible,
   setVisible,
 }: AppAppearanceDialogProps) => {
   const { appearance, isDark } = useAppSelector((state) => state.appTheme);
-  const [value, setValue] = useState(appearance);
+  const [value, setValue] = useState<Appearance>(appearance);
   const nativeColorScheme = useColorScheme();
-  const firstRender = useIsFirstRender();
   const dispatch = useAppDispatch();
   const theme = useTheme();
 
   useEffect(() => {
-    if (firstRender) {
-      return;
-    } else {
-      if (value === appearance) return;
-      dispatch(
-        setAppAppearance({
-          appearance: value,
-          nativeColorScheme,
-        })
-      );
-    }
-  }, [value, appearance]);
+    if (value === appearance) return;
+    dispatch(
+      setAppAppearance({
+        appearance: value,
+        nativeColorScheme,
+      })
+    );
+  }, [value]);
 
   return (
     // @ts-ignore

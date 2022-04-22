@@ -6,8 +6,9 @@ import { IconButton } from "@react-native-material/core";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import useTheme from "../../hooks/useTheme";
-import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { NavHeaderProps } from "./types";
+import { useAppDispatch } from "../../redux/hooks";
+import { saveNote } from "../../redux/features/addNote/addNoteSlice";
 
 const NavHeader = ({
   title,
@@ -15,6 +16,7 @@ const NavHeader = ({
   back,
 }: NavHeaderProps) => {
   const theme = useTheme();
+  const dispatch = useAppDispatch();
 
   return (
     <SafeAreaView>
@@ -26,9 +28,10 @@ const NavHeader = ({
                 // @ts-ignore
                 <AntDesign name="arrowleft" size={20} color={theme.tint} />
               )}
-              onPress={() =>
-                navigation.canGoBack() ? navigation.goBack() : navigation.pop()
-              }
+              onPress={() => {
+                dispatch(saveNote());
+                navigation.canGoBack() ? navigation.goBack() : navigation.pop();
+              }}
             />
             <Text
               style={{ ...styles.title, color: theme.text, paddingLeft: 10 }}

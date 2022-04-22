@@ -1,11 +1,10 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
 import { StatusBar } from "expo-status-bar";
-import dayjs from "dayjs";
 
 import { useAppSelector } from "../redux/hooks";
 import useTheme from "../hooks/useTheme";
-import { Divider } from "@react-native-material/core";
+import AddNoteInput from "../components/AddNoteInput";
 
 const AddNote = () => {
   const isDarkMode = useAppSelector((state) => state.appTheme.isDark);
@@ -13,38 +12,7 @@ const AddNote = () => {
 
   return (
     <View style={{ ...styles.container, backgroundColor: theme.background }}>
-      <View>
-        <TextInput
-          style={{
-            ...styles.titleInput,
-            backgroundColor: theme.background,
-            color: theme.text,
-          }}
-          numberOfLines={2}
-          placeholder="Title"
-          placeholderTextColor={"#C4C4C4"}
-          selectionColor={theme.tint}
-        />
-      </View>
-      <Text style={{ color: "#C4C4C4" }}>
-        {dayjs(Date.now()).format("DD MMMM YYYY")}
-      </Text>
-      <Divider
-        style={{
-          marginTop: 15,
-          height: 2,
-          backgroundColor: isDarkMode ? "#656262" : "#C4C4C4",
-        }}
-      />
-      <View style={{ flex: 1 }}>
-        <TextInput
-          placeholder="Note"
-          multiline
-          selectionColor={theme.tint}
-          style={{ ...styles.noteInput, color: theme.text }}
-          placeholderTextColor={"#C4C4C4"}
-        />
-      </View>
+      <AddNoteInput theme={theme} isDarkMode={isDarkMode} />
       <StatusBar
         style={isDarkMode ? "light" : "dark"}
         backgroundColor={theme.background}
@@ -60,14 +28,5 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 15,
     paddingTop: 53,
-  },
-  titleInput: {
-    fontSize: 22,
-    fontWeight: "600",
-  },
-  noteInput: {
-    fontSize: 20,
-    fontWeight: "600",
-    paddingTop: 15,
   },
 });
