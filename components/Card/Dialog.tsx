@@ -3,7 +3,6 @@ import {
   Button,
   Portal,
   Paragraph,
-  Text,
 } from "react-native-paper";
 import { DialogProps } from "./types";
 

@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, TextInput, Pressable } from "react-native";
 
-import { StatusBar } from "expo-status-bar";
 import { Stack } from "@react-native-material/core";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 
@@ -63,10 +62,6 @@ const AddDocument = () => {
           Save Card
         </Text>
       </Pressable>
-      <StatusBar
-        style={isDarkMode ? "light" : "dark"}
-        backgroundColor={theme.background}
-      />
     </View>
   );
 };

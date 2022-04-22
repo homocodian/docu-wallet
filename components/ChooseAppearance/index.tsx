@@ -1,5 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text } from "react-native";
 
 import {
   Dialog,
@@ -14,26 +13,25 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { setAppAppearance } from "../../redux/features/appTheme/appThemeSlice";
 import useTheme from "../../hooks/useTheme";
 import useColorScheme from "../../hooks/useColorScheme";
+import { styles } from "./styles";
 
 const ChooseAppearance = ({
   visible,
   setVisible,
 }: AppAppearanceDialogProps) => {
   const { appearance, isDark } = useAppSelector((state) => state.appTheme);
-  const [value, setValue] = useState<Appearance>(appearance);
   const nativeColorScheme = useColorScheme();
   const dispatch = useAppDispatch();
   const theme = useTheme();
 
-  useEffect(() => {
-    if (value === appearance) return;
+  const onValueChange = (value: Appearance) => {
     dispatch(
       setAppAppearance({
         appearance: value,
         nativeColorScheme,
       })
     );
-  }, [value]);
+  };
 
   return (
     // @ts-ignore
@@ -64,9 +62,9 @@ const ChooseAppearance = ({
           <RadioButton.Group
             onValueChange={(newValue) => {
               setVisible.off();
-              setValue(newValue as Appearance);
+              onValueChange(newValue as Appearance);
             }}
-            value={value}
+            value={appearance}
           >
             <View style={styles.row}>
               {/* @ts-ignore */}
@@ -77,6 +75,7 @@ const ChooseAppearance = ({
                     text: theme.text,
                   },
                   mode: "exact",
+                  dark: isDark,
                 }}
               />
               <Text style={{ ...styles.spacedText, color: theme.text }}>
@@ -100,7 +99,16 @@ const ChooseAppearance = ({
             </View>
             <View style={styles.row}>
               {/* @ts-ignore */}
-              <RadioButton value="dark" />
+              <RadioButton
+                value="dark"
+                theme={{
+                  colors: {
+                    text: theme.tint,
+                  },
+                  mode: "exact",
+                  dark: isDark,
+                }}
+              />
               <Text style={{ ...styles.spacedText, color: theme.text }}>
                 Dark
               </Text>
@@ -113,15 +121,3 @@ const ChooseAppearance = ({
 };
 
 export default ChooseAppearance;
-
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: "row",
-    alignItems: "baseline",
-    marginVertical: 4,
-  },
-  spacedText: {
-    marginLeft: 8,
-    fontSize: 16,
-  },
-});

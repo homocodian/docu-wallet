@@ -1,18 +1,7 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  Pressable as DefaultPressable,
-} from "react-native";
+import { View, Text, Image, Pressable as DefaultPressable } from "react-native";
 
 import { Pressable, IconButton, useBoolean } from "@react-native-material/core";
-import {
-  AntDesign,
-  SimpleLineIcons,
-  MaterialIcons,
-  Feather,
-} from "@expo/vector-icons";
+import { AntDesign, SimpleLineIcons, MaterialIcons } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 
 import { Fragment, useState } from "react";
@@ -20,6 +9,7 @@ import { CardProps } from "./types";
 import { shareCard, copyToClipboard } from "../../utils/";
 import ChooseDialog from "./ChooseDialog";
 import AlertDialog from "../AlertDialog";
+import { styles } from "./styles";
 
 function Card({ theme, item }: CardProps) {
   // dialog state
@@ -170,60 +160,3 @@ function Card({ theme, item }: CardProps) {
 }
 
 export default Card;
-
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  cardContainer: {
-    marginVertical: 10,
-  },
-  cardHeader: {
-    flex: 1,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-  },
-  cardSubtitle: {},
-  card: {
-    width: "100%",
-    borderRadius: 15,
-    borderColor: "#121212",
-    borderWidth: 1,
-    overflow: "hidden",
-  },
-  cardFooter: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 10,
-    paddingTop: 6,
-  },
-  copyButton: {
-    color: "#B0BEC5",
-    flexDirection: "row",
-  },
-  image: {
-    width: "100%",
-    aspectRatio: 16 / 9,
-  },
-  placeholderContainer: {
-    borderColor: "#121212",
-    borderWidth: 1,
-    borderRadius: 15,
-    overflow: "hidden",
-  },
-  placeholder: {
-    aspectRatio: 16 / 9,
-    backgroundColor: "#E0E0E0",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});

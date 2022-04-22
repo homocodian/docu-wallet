@@ -1,11 +1,12 @@
-import { StyleSheet, View } from "react-native";
-import React, { Fragment, useCallback, useMemo, useRef, useState } from "react";
+import { View } from "react-native";
+import { Fragment, useState } from "react";
 
 import { IconButton, Text } from "@react-native-material/core";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
 
 import { NoteCardProps } from "./types";
 import Menu from "./Menu";
+import { styles } from "./styles";
 
 const NoteCard = ({ theme, id, note, title }: NoteCardProps) => {
   const [visible, setVisible] = useState(false);
@@ -18,12 +19,7 @@ const NoteCard = ({ theme, id, note, title }: NoteCardProps) => {
             ellipsizeMode="tail"
             numberOfLines={1}
             color={theme.text}
-            style={{
-              textTransform: "capitalize",
-              maxWidth: "75%",
-              fontSize: 18,
-              fontWeight: "600",
-            }}
+            style={styles.titleText}
           >
             {title}
           </Text>
@@ -53,24 +49,3 @@ const NoteCard = ({ theme, id, note, title }: NoteCardProps) => {
 };
 
 export default NoteCard;
-
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    borderWidth: 1,
-    borderColor: "#C4C4C4",
-    marginBottom: 15,
-    borderRadius: 6,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-  contentContainer: {
-    flex: 1,
-    alignItems: "center",
-  },
-});

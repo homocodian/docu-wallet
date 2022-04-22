@@ -1,6 +1,5 @@
 import {
   NativeSyntheticEvent,
-  StyleSheet,
   Text,
   TextInput,
   TextInputChangeEventData,
@@ -16,6 +15,7 @@ import {
   setNoteText,
   setTitleText,
 } from "../../redux/features/addNote/addNoteSlice";
+import { styles } from "./styles";
 
 const AddNoteInput = ({
   theme,
@@ -83,15 +83,3 @@ const AddNoteInput = ({
 };
 
 export default AddNoteInput;
-
-const styles = StyleSheet.create({
-  titleInput: {
-    fontSize: 22,
-    fontWeight: "600",
-  },
-  noteInput: {
-    fontSize: 20,
-    fontWeight: "600",
-    paddingTop: 15,
-  },
-});

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, Pressable, Alert } from "react-native";
+import { View, Text, Image, Pressable } from "react-native";
 
 import { IconButton, useBoolean } from "@react-native-material/core";
 import {
@@ -13,6 +13,7 @@ import { Fragment, useState } from "react";
 import { DocumentProps } from "./types";
 import { copyToClipboard, shareCard } from "../../utils";
 import AlertDialog from "../AlertDialog";
+import { styles } from "./styles";
 
 function DocumentCard({ theme, item }: DocumentProps) {
   const [selectedDoc, setSelectedDoc] = useState<ImagePicker.ImageInfo | null>(
@@ -107,61 +108,3 @@ function DocumentCard({ theme, item }: DocumentProps) {
 }
 
 export default DocumentCard;
-
-const styles = StyleSheet.create({
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
-  cardContainer: {
-    marginVertical: 10,
-  },
-  cardHeader: {
-    flex: 1,
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: "600",
-  },
-  cardSubtitle: {},
-  card: {
-    width: "100%",
-    borderRadius: 15,
-    borderColor: "#121212",
-    borderWidth: 1,
-    overflow: "hidden",
-  },
-  cardFooter: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 10,
-    paddingTop: 6,
-  },
-  copyButton: {
-    color: "#B0BEC5",
-    flexDirection: "row",
-  },
-  image: {
-    width: "100%",
-    aspectRatio: 16 / 9,
-    resizeMode: "contain",
-  },
-  placeholderContainer: {
-    borderColor: "#121212",
-    borderWidth: 1,
-    borderRadius: 15,
-    overflow: "hidden",
-  },
-  placeholder: {
-    aspectRatio: 16 / 9,
-    backgroundColor: "#E0E0E0",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});

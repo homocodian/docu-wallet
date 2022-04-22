@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text } from "react-native";
+import { Pressable, Text } from "react-native";
 import React from "react";
 
 import { Dialog, Portal } from "react-native-paper";
@@ -69,5 +69,3 @@ const AlertDialog = ({
 };
 
 export default AlertDialog;
-
-const styles = StyleSheet.create({});

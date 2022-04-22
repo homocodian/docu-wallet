@@ -1,9 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 
-import { StatusBar } from "expo-status-bar";
 import { Pressable, Stack } from "@react-native-material/core";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import Icon from "@expo/vector-icons/MaterialIcons";
 
 import useTheme from "../hooks/useTheme";
 import { useAppSelector } from "../redux/hooks";
@@ -50,7 +49,7 @@ const AddCard = () => {
           }}
         >
           {/* @ts-ignore */}
-          <MaterialIcons
+          <Icon
             name="add-photo-alternate"
             size={24}
             color={isDarkMode ? "#fff" : "#C4C4C4"}
@@ -64,7 +63,7 @@ const AddCard = () => {
           }}
         >
           {/* @ts-ignore */}
-          <MaterialIcons
+          <Icon
             name="add-photo-alternate"
             size={24}
             color={isDarkMode ? "#fff" : "#C4C4C4"}
@@ -77,10 +76,6 @@ const AddCard = () => {
           Save Card
         </Text>
       </Pressable>
-      <StatusBar
-        style={isDarkMode ? "light" : "dark"}
-        backgroundColor={theme.background}
-      />
     </View>
   );
 };

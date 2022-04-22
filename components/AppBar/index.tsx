@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import {
   AppBar as DefaultAppBar,
   HStack,
@@ -12,25 +10,10 @@ import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 
 import useTheme from "../../hooks/useTheme";
 import Menu from "../Menu";
-import { useAppSelector } from "../../redux/hooks";
-import { StatusBar } from "expo-status-bar";
-import useColorScheme from "../../hooks/useColorScheme";
 
 const AppBar = (_props: NativeStackHeaderProps) => {
   const theme = useTheme();
-  const ColorScheme = useColorScheme();
   const [visible, setVisible] = useBoolean(false);
-  const { appearance, isDark } = useAppSelector((state) => state.appTheme);
-  const [dark, setDark] = useState(false);
-
-  useEffect(() => {
-    if (appearance === "system") {
-      const isSystemDark = ColorScheme === "light" ? false : true;
-      setDark(isSystemDark);
-    } else {
-      setDark(isDark);
-    }
-  }, [appearance, isDark]);
 
   return (
     <SafeAreaView>
@@ -67,11 +50,6 @@ const AppBar = (_props: NativeStackHeaderProps) => {
           </HStack>
         )}
       ></DefaultAppBar>
-
-      <StatusBar
-        style={!dark ? "dark" : "light"}
-        backgroundColor={theme.primary}
-      />
     </SafeAreaView>
   );
 };

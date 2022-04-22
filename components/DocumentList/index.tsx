@@ -1,13 +1,14 @@
-import { FlatList, ListRenderItemInfo, StyleSheet, View } from "react-native";
-import React, { Fragment } from "react";
+import { FlatList, ListRenderItemInfo, View } from "react-native";
+import React from "react";
 
 import { Caption } from "react-native-paper";
 
 import { fakeData } from "../../utils/fakeDataDocument";
 import { DocumentListProps } from "./types";
-import { isSmallDevice, window } from "../../constants/Layout";
+import { isSmallDevice } from "../../constants/Layout";
 import DocumentCard from "../DocumentCard";
 import { CardItem } from "../DocumentCard/types";
+import { styles } from "./styles";
 
 const DocumentList = ({ theme }: DocumentListProps) => {
   const RenderItem = ({ item }: ListRenderItemInfo<CardItem>) => {
@@ -54,16 +55,3 @@ const DocumentList = ({ theme }: DocumentListProps) => {
 };
 
 export default React.memo(DocumentList);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  emptyComponent: {
-    height: window.height,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});

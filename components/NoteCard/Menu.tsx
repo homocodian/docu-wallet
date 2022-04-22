@@ -1,12 +1,9 @@
-import { StyleSheet } from "react-native";
-
 import { Dialog, List, Portal } from "react-native-paper";
 
 import { NoteMenuProps } from "./types";
 import copyToClipboard from "../../utils/copyToClipboard";
 import { useAppDispatch } from "../../redux/hooks";
 import { deleteNote } from "../../redux/features/addNote/addNoteSlice";
-import { StatusBar } from "expo-status-bar";
 
 const Menu = ({ visible, setVisible, theme, note, id }: NoteMenuProps) => {
   const dispatch = useAppDispatch();
@@ -59,5 +56,3 @@ const Menu = ({ visible, setVisible, theme, note, id }: NoteMenuProps) => {
 };
 
 export default Menu;
-
-const styles = StyleSheet.create({});

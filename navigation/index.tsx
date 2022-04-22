@@ -1,5 +1,4 @@
 import * as React from "react";
-import { ColorSchemeName } from "react-native";
 
 import { FontAwesome } from "@expo/vector-icons";
 import {
@@ -9,29 +8,35 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import * as NavigationBar from "expo-navigation-bar";
 
-import ModalScreen from "../screens/ModalScreen";
-import NotFoundScreen from "../screens/NotFoundScreen";
 import Cards from "../screens/Cards";
-import { RootStackParamList, RootTabParamList } from "../types";
-import LinkingConfiguration from "./LinkingConfiguration";
-import Documents from "../screens/Documents";
 import Notes from "../screens/Notes";
-import useTheme from "../hooks/useTheme";
-import Colors from "../constants/Colors";
-import AppBar from "../components/AppBar";
-import { useAppSelector } from "../redux/hooks";
-import AddCard from "../screens/AddCard";
-import NavHeader from "../components/NavHeader";
-import AddDocument from "../screens/AddDocument";
 import AddNote from "../screens/AddNote";
+import AddCard from "../screens/AddCard";
+import Colors from "../constants/Colors";
+import useTheme from "../hooks/useTheme";
+import AppBar from "../components/AppBar";
+import Documents from "../screens/Documents";
+import NavHeader from "../components/NavHeader";
+import ModalScreen from "../screens/ModalScreen";
+import AddDocument from "../screens/AddDocument";
+import NotFoundScreen from "../screens/NotFoundScreen";
+import LinkingConfiguration from "./LinkingConfiguration";
+import { RootStackParamList, RootTabParamList } from "../types";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
+import { getIsDark } from "../redux/features/appTheme/appThemeSlice";
+import { NativeColorScheme } from "../redux/features/appTheme/types";
+import { StatusBar } from "expo-status-bar";
 
 export default function Navigation({
   ColorScheme,
 }: {
-  ColorScheme: ColorSchemeName;
+  ColorScheme: NativeColorScheme;
 }) {
-  const isDark = useAppSelector((state) => state.appTheme.isDark);
+  const dispatch = useAppDispatch();
+  const isDarkMode = useAppSelector((state) => state.appTheme.isDark);
+
   const darkTheme = {
     ...DarkTheme,
     colors: {
@@ -40,12 +45,34 @@ export default function Navigation({
     },
   };
 
+  React.useEffect(() => {
+    dispatch(getIsDark(ColorScheme));
+  }, []);
+
+  React.useEffect(() => {
+    if (isDarkMode) {
+      Promise.all([
+        NavigationBar.setBackgroundColorAsync("black"),
+        NavigationBar.setButtonStyleAsync("light"),
+      ]).catch(() => {});
+    } else {
+      Promise.all([
+        NavigationBar.setBackgroundColorAsync("white"),
+        NavigationBar.setButtonStyleAsync("dark"),
+      ]).catch(() => {});
+    }
+  }, [isDarkMode]);
+
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
-      theme={isDark ? darkTheme : DefaultTheme}
+      theme={isDarkMode ? darkTheme : DefaultTheme}
     >
       <RootNavigator />
+      <StatusBar
+        style={isDarkMode ? "light" : "dark"}
+        backgroundColor={isDarkMode ? "#333333" : "#F2EFEA"}
+      />
     </NavigationContainer>
   );
 }

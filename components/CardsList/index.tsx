@@ -1,12 +1,5 @@
-import {
-  FlatList,
-  ListRenderItemInfo,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  StyleSheet,
-  View,
-} from "react-native";
-import React, { Fragment } from "react";
+import { FlatList, ListRenderItemInfo, View } from "react-native";
+import React from "react";
 
 import { Caption } from "react-native-paper";
 
@@ -14,7 +7,8 @@ import Card from "../Card";
 import { data } from "../../utils/data";
 import { CardsListProps } from "./types";
 import { CardDetails } from "../../types";
-import { isSmallDevice, window } from "../../constants/Layout";
+import { isSmallDevice } from "../../constants/Layout";
+import { styles } from "./styles";
 
 const CardsList = ({ theme }: CardsListProps) => {
   const RenderItem = ({ item }: ListRenderItemInfo<CardDetails>) => {
@@ -61,16 +55,3 @@ const CardsList = ({ theme }: CardsListProps) => {
 };
 
 export default React.memo(CardsList);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  emptyComponent: {
-    height: window.height,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
