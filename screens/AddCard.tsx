@@ -1,82 +1,97 @@
 import React from "react";
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  Pressable as DefaultPressable,
+} from "react-native";
 
 import { Pressable, Stack } from "@react-native-material/core";
 import Icon from "@expo/vector-icons/MaterialIcons";
 
 import useTheme from "../hooks/useTheme";
 import { useAppSelector } from "../redux/hooks";
+import { StatusBar } from "expo-status-bar";
 
 const AddCard = () => {
   const theme = useTheme();
   const isDarkMode = useAppSelector((state) => state.appTheme.isDark);
 
   return (
-    <View
-      style={{
-        ...styles.container,
-        backgroundColor: isDarkMode ? "#212121" : "#fff",
-      }}
-    >
-      <Stack spacing={26} style={styles.stack}>
-        <TextInput
-          style={{
-            ...styles.input,
-            backgroundColor: isDarkMode ? "#141313" : "#F9F9F9",
-          }}
-          placeholder="Card Name"
-          placeholderTextColor={isDarkMode ? "#666161" : "#C4C4C4"}
-          selectionColor={isDarkMode ? "#fff" : "#121212"}
-        />
-        <TextInput
-          placeholder="UID Number"
-          style={{
-            ...styles.input,
-            backgroundColor: isDarkMode ? "#141313" : "#F9F9F9",
-          }}
-          placeholderTextColor={isDarkMode ? "#666161" : "#C4C4C4"}
-          selectionColor={isDarkMode ? "#fff" : "#121212"}
-        />
-      </Stack>
-      <View style={{ marginTop: 27 }}>
-        <Text style={styles.uploadText}>Upload Images of ID</Text>
-      </View>
-      <View style={styles.boxContainer}>
-        <View
-          style={{
-            ...styles.box,
-            backgroundColor: isDarkMode ? "#141313" : "#F9F9F9",
-          }}
-        >
-          {/* @ts-ignore */}
-          <Icon
-            name="add-photo-alternate"
-            size={24}
-            color={isDarkMode ? "#fff" : "#C4C4C4"}
+    <>
+      <StatusBar
+        style={isDarkMode ? "light" : "dark"}
+        backgroundColor={theme.background}
+      />
+      <View
+        style={{
+          ...styles.container,
+          backgroundColor: isDarkMode ? "#212121" : "#fff",
+        }}
+      >
+        <Stack spacing={26} style={styles.stack}>
+          <TextInput
+            style={{
+              ...styles.input,
+              backgroundColor: isDarkMode ? "#141313" : "#F9F9F9",
+            }}
+            placeholder="Card Name"
+            placeholderTextColor={isDarkMode ? "#666161" : "#C4C4C4"}
+            selectionColor={theme.background}
           />
-          <Text style={{ color: isDarkMode ? "#fff" : "#C4C4C4" }}>Front</Text>
-        </View>
-        <View
-          style={{
-            ...styles.box,
-            backgroundColor: isDarkMode ? "#141313" : "#F9F9F9",
-          }}
-        >
-          {/* @ts-ignore */}
-          <Icon
-            name="add-photo-alternate"
-            size={24}
-            color={isDarkMode ? "#fff" : "#C4C4C4"}
+          <TextInput
+            placeholder="UID Number"
+            style={{
+              ...styles.input,
+              backgroundColor: isDarkMode ? "#141313" : "#F9F9F9",
+            }}
+            placeholderTextColor={isDarkMode ? "#666161" : "#C4C4C4"}
+            selectionColor={theme.background}
           />
-          <Text style={{ color: isDarkMode ? "#fff" : "#C4C4C4" }}>Back</Text>
+        </Stack>
+        <View style={{ marginTop: 27 }}>
+          <Text style={styles.uploadText}>Upload Images of ID</Text>
         </View>
+        <View style={styles.boxContainer}>
+          <DefaultPressable
+            style={{
+              ...styles.box,
+              backgroundColor: isDarkMode ? "#141313" : "#F9F9F9",
+            }}
+          >
+            {/* @ts-ignore */}
+            <Icon
+              name="add-photo-alternate"
+              size={24}
+              color={isDarkMode ? "#fff" : "#C4C4C4"}
+            />
+            <Text style={{ color: isDarkMode ? "#fff" : "#C4C4C4" }}>
+              Front
+            </Text>
+          </DefaultPressable>
+          <DefaultPressable
+            style={{
+              ...styles.box,
+              backgroundColor: isDarkMode ? "#141313" : "#F9F9F9",
+            }}
+          >
+            {/* @ts-ignore */}
+            <Icon
+              name="add-photo-alternate"
+              size={24}
+              color={isDarkMode ? "#fff" : "#C4C4C4"}
+            />
+            <Text style={{ color: isDarkMode ? "#fff" : "#C4C4C4" }}>Back</Text>
+          </DefaultPressable>
+        </View>
+        <Pressable style={{ ...styles.button, backgroundColor: theme.primary }}>
+          <Text style={{ color: theme.text, fontSize: 16, fontWeight: "600" }}>
+            Save Card
+          </Text>
+        </Pressable>
       </View>
-      <Pressable style={{ ...styles.button, backgroundColor: theme.primary }}>
-        <Text style={{ color: theme.text, fontSize: 16, fontWeight: "600" }}>
-          Save Card
-        </Text>
-      </Pressable>
-    </View>
+    </>
   );
 };
 
@@ -95,6 +110,7 @@ const styles = StyleSheet.create({
     height: 59,
     borderRadius: 20,
     paddingHorizontal: 15,
+    fontSize: 20,
   },
   uploadText: {
     color: "#939090",

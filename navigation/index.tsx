@@ -104,7 +104,9 @@ function RootNavigator() {
         component={AddDocument}
         options={{
           headerShown: true,
-          header: (props) => <NavHeader title="Add Note" headerProps={props} />,
+          header: (props) => (
+            <NavHeader title="Add Document" headerProps={props} />
+          ),
         }}
       />
       <Stack.Screen
