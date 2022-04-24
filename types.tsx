@@ -7,6 +7,7 @@ import {
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import Colors from "./constants/Colors";
+import { CardItem } from "./components/DocumentCard/types";
 
 declare global {
   namespace ReactNavigation {
@@ -21,6 +22,16 @@ export type RootStackParamList = {
   AddCard: undefined;
   AddDocument: undefined;
   AddNote: undefined;
+  DocumentDetail: {
+    id: string;
+    name: string;
+    uid: string;
+    fileName: string;
+    fileSize: number;
+    fileUri: string;
+    createdAt: string;
+    updatedAt: string;
+  };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

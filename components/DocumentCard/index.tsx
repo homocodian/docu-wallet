@@ -1,35 +1,35 @@
-import { View, Text, Image, Pressable } from "react-native";
+import { View, Text, Pressable, Alert, Image } from "react-native";
 
-import { IconButton, useBoolean } from "@react-native-material/core";
-import {
-  AntDesign,
-  SimpleLineIcons,
-  Feather,
-  MaterialIcons,
-} from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
+import { IconButton } from "@react-native-material/core";
+import { AntDesign, SimpleLineIcons, MaterialIcons } from "@expo/vector-icons";
 
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import { DocumentProps } from "./types";
 import { copyToClipboard, shareCard } from "../../utils";
-import AlertDialog from "../AlertDialog";
 import { styles } from "./styles";
 
-function DocumentCard({ theme, item }: DocumentProps) {
-  const [selectedDoc, setSelectedDoc] = useState<ImagePicker.ImageInfo | null>(
-    null
-  );
-  const [alert, setAlert] = useBoolean(false);
-  const [alertMessage, setAlertMessage] = useState("");
-
+function DocumentCard({ theme, item, navigation }: DocumentProps) {
   //  share card
   const share = () => {
-    if (!(selectedDoc && selectedDoc.uri)) {
-      setAlertMessage("No document found to share");
-      setAlert.on();
+    if (!item.fileUri) {
+      Alert.alert("No document found to share");
       return;
     }
-    shareCard(selectedDoc.uri, item.name);
+    shareCard(item.fileUri, item.name, "application/pdf");
+  };
+
+  // open details screen
+  const openDetails = () => {
+    navigation.navigate("DocumentDetail", {
+      id: item.id,
+      uid: item.uid,
+      name: item.name,
+      fileUri: item.fileUri,
+      fileName: item.fileName,
+      fileSize: item.fileSize,
+      createdAt: item.createdAt.toDateString(),
+      updatedAt: item.updatedAt.toDateString(),
+    });
   };
 
   return (
@@ -41,27 +41,27 @@ function DocumentCard({ theme, item }: DocumentProps) {
           <Text style={{ ...styles.cardTitle, color: theme.text }}>
             {item.name}
           </Text>
-          <Pressable style={styles.cardSubtitle}>
+          <Pressable style={styles.cardSubtitle} onPress={openDetails}>
             <Text style={{ color: theme.secondaryText }}>See details</Text>
           </Pressable>
         </View>
 
-        {/* card image */}
-        {!selectedDoc ? (
-          <Pressable onPress={() => {}} style={styles.placeholderContainer}>
-            <View style={styles.placeholder}>
-              {/* @ts-ignore */}
-              <Feather name="camera" size={32} color={theme.tint} />
-            </View>
-          </Pressable>
-        ) : (
-          <Pressable
-            style={{ ...styles.card, backgroundColor: theme.background }}
-            onPress={() => {}}
-          >
-            <Image source={{ uri: selectedDoc.uri }} style={styles.image} />
-          </Pressable>
-        )}
+        {/* Card */}
+        <View
+          style={{
+            ...styles.card,
+            backgroundColor: theme.background,
+            borderColor: theme.tint,
+          }}
+        >
+          <Image
+            source={require("../../assets/images/pdf.png")}
+            style={{
+              resizeMode: "cover",
+            }}
+          />
+          <Text style={{ color: theme.text }}> {item.fileName} </Text>
+        </View>
 
         {/* card footer */}
         <View style={styles.cardFooter}>
@@ -98,11 +98,6 @@ function DocumentCard({ theme, item }: DocumentProps) {
           </View>
         </View>
       </View>
-      <AlertDialog
-        visible={alert}
-        setvisible={setAlert}
-        message={alertMessage}
-      />
     </Fragment>
   );
 }

@@ -28,6 +28,7 @@ import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { getIsDark } from "../redux/features/appTheme/appThemeSlice";
 import { NativeColorScheme } from "../redux/features/appTheme/types";
 import { StatusBar } from "expo-status-bar";
+import DocumentDetail from "../screens/DocumentDetail";
 
 export default function Navigation({
   ColorScheme,
@@ -116,6 +117,16 @@ function RootNavigator() {
           headerShown: true,
           header: (props) => (
             <NavHeader title="Add Note" headerProps={props} back />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="DocumentDetail"
+        component={DocumentDetail}
+        options={{
+          headerShown: true,
+          header: (props) => (
+            <NavHeader title="Document Details" headerProps={props} />
           ),
         }}
       />

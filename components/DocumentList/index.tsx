@@ -2,17 +2,18 @@ import { FlatList, ListRenderItemInfo, View } from "react-native";
 import React from "react";
 
 import { Caption } from "react-native-paper";
+import WithObservables from "@nozbe/with-observables";
 
-import { fakeData } from "../../utils/fakeDataDocument";
 import { DocumentListProps } from "./types";
 import { isSmallDevice } from "../../constants/Layout";
 import DocumentCard from "../DocumentCard";
 import { CardItem } from "../DocumentCard/types";
 import { styles } from "./styles";
+import documentDao from "../../db/dao/Document";
 
-const DocumentList = ({ theme }: DocumentListProps) => {
+const DocumentList = ({ theme, documents, navigation }: DocumentListProps) => {
   const RenderItem = ({ item }: ListRenderItemInfo<CardItem>) => {
-    return <DocumentCard theme={theme} item={item} />;
+    return <DocumentCard theme={theme} item={item} navigation={navigation} />;
   };
 
   function EmptyComponent() {
@@ -34,7 +35,7 @@ const DocumentList = ({ theme }: DocumentListProps) => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={fakeData}
+        data={documents}
         renderItem={RenderItem}
         keyExtractor={(data) => data.id}
         showsVerticalScrollIndicator={false}
@@ -54,4 +55,8 @@ const DocumentList = ({ theme }: DocumentListProps) => {
   );
 };
 
-export default React.memo(DocumentList);
+const enhance = WithObservables(["documents"], () => ({
+  documents: documentDao.observerDocument(),
+}));
+
+export default enhance(DocumentList);

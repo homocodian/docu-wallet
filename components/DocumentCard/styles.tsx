@@ -24,9 +24,11 @@ export const styles = StyleSheet.create({
   card: {
     width: "100%",
     borderRadius: 15,
-    borderColor: "#121212",
     borderWidth: 1,
     overflow: "hidden",
+    aspectRatio: 16 / 9,
+    justifyContent: "center",
+    alignItems: "center",
   },
   cardFooter: {
     flexDirection: "row",

@@ -46,7 +46,7 @@ const NoteCardList = ({ theme, notes }: { theme: AppTheme; notes: any }) => {
   );
 };
 
-const enhance = withObservables([], () => ({
+const enhance = withObservables(["notes"], () => ({
   notes: NoteDAO.observerNote(),
 }));
 
