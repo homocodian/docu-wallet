@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { View, Text, Pressable, Alert, Image } from "react-native";
 
 import { IconButton } from "@react-native-material/core";
@@ -19,7 +20,7 @@ function DocumentCard({ theme, item, navigation }: DocumentProps) {
   };
 
   // open details screen
-  const openDetails = () => {
+  const openDetails = useCallback(() => {
     navigation.navigate("DocumentDetail", {
       id: item.id,
       uid: item.uid,
@@ -30,7 +31,7 @@ function DocumentCard({ theme, item, navigation }: DocumentProps) {
       createdAt: item.createdAt.toDateString(),
       updatedAt: item.updatedAt.toDateString(),
     });
-  };
+  }, []);
 
   return (
     // card
@@ -94,6 +95,7 @@ function DocumentCard({ theme, item, navigation }: DocumentProps) {
                 />
               )}
               color={theme.tint}
+              onPress={openDetails}
             />
           </View>
         </View>
