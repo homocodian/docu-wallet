@@ -8,7 +8,6 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import * as NavigationBar from "expo-navigation-bar";
 
 import Cards from "../screens/Cards";
 import Notes from "../screens/Notes";
@@ -29,6 +28,7 @@ import { getIsDark } from "../redux/features/appTheme/appThemeSlice";
 import { NativeColorScheme } from "../redux/features/appTheme/types";
 import { StatusBar } from "expo-status-bar";
 import DocumentDetail from "../screens/DocumentDetail";
+import ShowImages from "../screens/ShowImages";
 
 export default function Navigation({
   ColorScheme,
@@ -49,20 +49,6 @@ export default function Navigation({
   React.useEffect(() => {
     dispatch(getIsDark(ColorScheme));
   }, []);
-
-  React.useEffect(() => {
-    if (isDarkMode) {
-      Promise.all([
-        NavigationBar.setBackgroundColorAsync("black"),
-        NavigationBar.setButtonStyleAsync("light"),
-      ]).catch(() => {});
-    } else {
-      Promise.all([
-        NavigationBar.setBackgroundColorAsync("white"),
-        NavigationBar.setButtonStyleAsync("dark"),
-      ]).catch(() => {});
-    }
-  }, [isDarkMode]);
 
   return (
     <NavigationContainer
@@ -128,6 +114,13 @@ function RootNavigator() {
           header: (props) => (
             <NavHeader title="Document Details" headerProps={props} />
           ),
+        }}
+      />
+      <Stack.Screen
+        name="ShowImages"
+        component={ShowImages}
+        options={{
+          headerShown: false,
         }}
       />
       <Stack.Screen

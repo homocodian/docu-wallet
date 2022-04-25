@@ -1,80 +1,41 @@
-import { View, Text, Image, Pressable as DefaultPressable } from "react-native";
+import { Fragment } from "react";
+import { View, Text, Image, Alert } from "react-native";
 
-import { Pressable, IconButton, useBoolean } from "@react-native-material/core";
+import { Pressable, IconButton } from "@react-native-material/core";
 import { AntDesign, SimpleLineIcons, MaterialIcons } from "@expo/vector-icons";
-import * as ImagePicker from "expo-image-picker";
 
-import { Fragment, useState } from "react";
 import { CardProps } from "./types";
-import { shareCard, copyToClipboard } from "../../utils/";
-import ChooseDialog from "./ChooseDialog";
-import AlertDialog from "../AlertDialog";
 import { styles } from "./styles";
+import { shareCard, copyToClipboard } from "../../utils/";
+import { useNavigation } from "@react-navigation/native";
 
-function Card({ theme, item }: CardProps) {
-  // dialog state
-  const [chooseVisible, setChooseVisible] = useBoolean(false);
-  const [alert, setAlert] = useBoolean(false);
-  const [alertMessage, setAlertMessage] = useState("");
+function Card({
+  theme,
+  id,
+  cardName,
+  backImageUri,
+  cardNumber,
+  frontImageUri,
+  createdAt,
+  updateAt,
+}: CardProps) {
+  const navigation = useNavigation();
 
-  const [selectedImage, setSelectedImage] =
-    useState<ImagePicker.ImageInfo | null>(null);
-
-  // pick a image from device
-  const openImagePickerAsync = async () => {
-    const permissionResult =
-      await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-    if (!permissionResult.granted) {
-      setAlertMessage("Permission to access storage is required!");
-      setAlert.on();
-      return;
+  const share = async (shareImageSide: "front" | "back") => {
+    if (shareImageSide === "front" && frontImageUri) {
+      await shareCard(`file:///${frontImageUri}`, cardName);
+    } else if (shareImageSide === "back" && backImageUri) {
+      await shareCard(`file:///${backImageUri}`, cardName);
+    } else {
+      Alert.alert("Alert!", "Can't share this file");
     }
-
-    const pickerResult = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      aspect: [16, 9],
-    });
-
-    if (pickerResult.cancelled) {
-      return;
-    }
-
-    setSelectedImage(pickerResult);
   };
 
-  //  share card
-  const share = () => {
-    if (!(selectedImage && selectedImage.uri)) {
-      setAlertMessage("No image found to share");
-      setAlert.on();
-      return;
-    }
-    shareCard(selectedImage.uri, item.name);
-  };
-
-  // capture image from camera
-  const captureImageAsync = async () => {
-    const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-
-    if (!permissionResult.granted) {
-      setAlertMessage("Permission to access camera is required!");
-      setAlert.on();
-      return;
-    }
-
-    const captureResult = await ImagePicker.launchCameraAsync({
-      aspect: [16, 9],
-      allowsEditing: true,
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+  const showFullScreen = () => {
+    navigation.navigate("ShowImages", {
+      frontImageUri,
+      backImageUri,
     });
-
-    if (captureResult.cancelled) {
-      return;
-    }
-
-    setSelectedImage(captureResult);
   };
 
   return (
@@ -84,42 +45,53 @@ function Card({ theme, item }: CardProps) {
         {/* card header */}
         <View style={styles.cardHeader}>
           <Text style={{ ...styles.cardTitle, color: theme.text }}>
-            {item.name}
+            {cardName}
           </Text>
           <Pressable style={styles.cardSubtitle} pressEffectColor="#ccc">
-            <Text style={{ color: theme.secondaryText }}>See details</Text>
+            <Text
+              style={{
+                color: theme.secondaryText,
+                paddingHorizontal: 5,
+                paddingVertical: 2,
+              }}
+            >
+              See details
+            </Text>
           </Pressable>
         </View>
 
         {/* card image */}
-        {!selectedImage ? (
-          <DefaultPressable
-            onPress={setChooseVisible.on}
-            style={styles.placeholderContainer}
-          >
-            <Image source={item.imageUrl} style={styles.image} />
-          </DefaultPressable>
-        ) : (
-          <DefaultPressable
-            style={{ ...styles.card, backgroundColor: theme.background }}
-            onPress={setChooseVisible.on}
-          >
-            <Image source={{ uri: selectedImage.uri }} style={styles.image} />
-          </DefaultPressable>
-        )}
+        <View
+          style={{
+            ...styles.card,
+            backgroundColor: theme.background,
+            borderColor: theme.tint,
+          }}
+        >
+          <Image
+            source={{
+              uri: `file:///${frontImageUri}`,
+            }}
+            style={styles.image}
+          />
+        </View>
 
         {/* card footer */}
         <View style={styles.cardFooter}>
+          {/* copy button */}
           <Pressable
             style={styles.copyButton}
             pressEffectColor="#ccc"
-            onPress={() => copyToClipboard(item.uid)}
+            onPress={() => copyToClipboard(cardNumber)}
           >
             <Text style={{ color: theme.secondaryText }}>Copy uid </Text>
             {/* @ts-ignore */}
             <MaterialIcons name="content-copy" size={15} color={theme.text} />
           </Pressable>
+
+          {/* other buttons */}
           <View style={{ flexDirection: "row" }}>
+            {/* share button */}
             {/* @ts-ignore */}
             <IconButton
               icon={() => (
@@ -127,8 +99,9 @@ function Card({ theme, item }: CardProps) {
                 <AntDesign name="sharealt" size={24} color={theme.tint} />
               )}
               color={theme.tint}
-              onPress={share}
+              onPress={() => share("front")}
             />
+            {/* see both image */}
             {/* @ts-ignore */}
             <IconButton
               icon={() => (
@@ -140,21 +113,11 @@ function Card({ theme, item }: CardProps) {
                 />
               )}
               color={theme.tint}
+              onPress={showFullScreen}
             />
           </View>
         </View>
       </View>
-      <ChooseDialog
-        visible={chooseVisible}
-        setVisible={setChooseVisible}
-        openImagePickerAsync={openImagePickerAsync}
-        captureImageAsync={captureImageAsync}
-      />
-      <AlertDialog
-        visible={alert}
-        setvisible={setAlert}
-        message={alertMessage}
-      />
     </Fragment>
   );
 }

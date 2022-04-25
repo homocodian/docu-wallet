@@ -20,7 +20,9 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
   },
-  cardSubtitle: {},
+  cardSubtitle: {
+    borderRadius: 8,
+  },
   card: {
     width: "100%",
     borderRadius: 15,

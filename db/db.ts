@@ -4,6 +4,7 @@ import SQLiteAdapter from "@nozbe/watermelondb/adapters/sqlite";
 import schema from "./schema";
 import Note from "./model/Note";
 import Document from "./model/Document";
+import Card from "./model/Card";
 
 const adapter = new SQLiteAdapter({
   dbName: "mainID",
@@ -12,7 +13,7 @@ const adapter = new SQLiteAdapter({
 
 const database = new Database({
   adapter,
-  modelClasses: [Note, Document],
+  modelClasses: [Note, Document, Card],
 });
 
 export { database };

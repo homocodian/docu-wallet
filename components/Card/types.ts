@@ -26,5 +26,11 @@ export type ChooseDialogProps = {
 
 export type CardProps = {
   theme: Theme;
-  item: CardDetails;
+  id: string;
+  cardName: string;
+  cardNumber: string;
+  frontImageUri: string;
+  backImageUri: string;
+  createdAt: Date;
+  updateAt: Date;
 };

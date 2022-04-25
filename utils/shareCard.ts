@@ -1,23 +1,20 @@
 import * as Sharing from "expo-sharing";
+import { Alert } from "react-native";
 
 import toastMessage from "./ToastMessage";
 
-async function shareCard(file: string, name: string, mimeType?: string) {
+async function shareCard(file: string, name: string) {
   if (!(await Sharing.isAvailableAsync())) {
-    toastMessage("File can't be shared");
+    toastMessage("Sharing is not available in this platform");
     return;
   }
 
-  if (mimeType) {
-    // const base64File = await RNFetchBlob.fs.;
-    // await Sharing.shareAsync(base64File, {
-    //   dialogTitle: `Share ${name}`,
-    //   mimeType: mimeType,
-    // });
-  } else {
+  try {
     await Sharing.shareAsync(file, {
-      dialogTitle: `Share your ${name}`,
+      dialogTitle: `Share ${name}`,
     });
+  } catch (error) {
+    Alert.alert("Sharing failed", "Can't share this file");
   }
 }
 

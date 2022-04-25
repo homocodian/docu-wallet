@@ -12,7 +12,7 @@ async function storagePermission() {
       permissions["android.permission.READ_EXTERNAL_STORAGE"];
 
     if (status === "never_ask_again") {
-      Alert.alert("Give permission manually");
+      Alert.alert("Permissions!", "Give storage permission manually");
       return false;
     } else if (status === "denied") {
       return false;

@@ -1,6 +1,6 @@
 import { CardDetails } from "../types";
 
-export const data: CardDetails[] = [
+export const data = [
   {
     id: "1",
     name: "Aadhaar Card",

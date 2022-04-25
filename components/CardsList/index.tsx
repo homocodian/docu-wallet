@@ -1,18 +1,29 @@
 import { FlatList, ListRenderItemInfo, View } from "react-native";
-import React from "react";
 
 import { Caption } from "react-native-paper";
+import WithObservables from "@nozbe/with-observables";
 
 import Card from "../Card";
-import { data } from "../../utils/data";
 import { CardsListProps } from "./types";
 import { CardDetails } from "../../types";
 import { isSmallDevice } from "../../constants/Layout";
 import { styles } from "./styles";
+import cardDao from "../../db/dao/Card";
 
-const CardsList = ({ theme }: CardsListProps) => {
+const CardsList = ({ theme, cards }: CardsListProps) => {
   const RenderItem = ({ item }: ListRenderItemInfo<CardDetails>) => {
-    return <Card theme={theme} item={item} />;
+    return (
+      <Card
+        theme={theme}
+        id={item?.id}
+        cardName={item?.cardName}
+        cardNumber={item?.cardNumber}
+        backImageUri={item?.backImageUri}
+        frontImageUri={item?.frontImageUri}
+        createdAt={item?.createdAt}
+        updateAt={item?.updateAt}
+      />
+    );
   };
 
   function EmptyComponent() {
@@ -34,7 +45,7 @@ const CardsList = ({ theme }: CardsListProps) => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={data}
+        data={cards}
         renderItem={RenderItem}
         keyExtractor={(data) => data.id}
         showsVerticalScrollIndicator={false}
@@ -54,4 +65,8 @@ const CardsList = ({ theme }: CardsListProps) => {
   );
 };
 
-export default React.memo(CardsList);
+const enhance = WithObservables(["cards"], () => ({
+  cards: cardDao.observerCard(),
+}));
+
+export default enhance(CardsList);

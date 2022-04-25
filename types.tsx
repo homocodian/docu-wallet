@@ -32,6 +32,10 @@ export type RootStackParamList = {
     createdAt: string;
     updatedAt: string;
   };
+  ShowImages: {
+    frontImageUri: string;
+    backImageUri: string;
+  };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
@@ -51,9 +55,12 @@ export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
 
 export type CardDetails = {
   id: string;
-  name: string;
-  imageUrl: any;
-  uid: string;
+  cardName: string;
+  cardNumber: string;
+  frontImageUri: string;
+  backImageUri: string;
+  createdAt: Date;
+  updateAt: Date;
 };
 
 export type MenuProps = {
