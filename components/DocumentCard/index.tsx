@@ -1,7 +1,10 @@
 import { useCallback } from "react";
 import { View, Text, Pressable, Alert, Image } from "react-native";
 
-import { IconButton } from "@react-native-material/core";
+import {
+  IconButton,
+  Pressable as RipplePressable,
+} from "@react-native-material/core";
 import { AntDesign, SimpleLineIcons, MaterialIcons } from "@expo/vector-icons";
 
 import { Fragment } from "react";
@@ -13,10 +16,10 @@ function DocumentCard({ theme, item, navigation }: DocumentProps) {
   //  share card
   const share = () => {
     if (!item.fileUri) {
-      Alert.alert("No document found to share");
+      Alert.alert("Alert!", "No document found to share");
       return;
     }
-    shareCard(item.fileUri, item.name, "application/pdf");
+    shareCard(`file:///${item.fileUri}`, item.name);
   };
 
   // open details screen
@@ -42,9 +45,13 @@ function DocumentCard({ theme, item, navigation }: DocumentProps) {
           <Text style={{ ...styles.cardTitle, color: theme.text }}>
             {item.name}
           </Text>
-          <Pressable style={styles.cardSubtitle} onPress={openDetails}>
+          <RipplePressable
+            style={styles.cardSubtitle}
+            onPress={openDetails}
+            pressEffectColor="#ccc"
+          >
             <Text style={{ color: theme.secondaryText }}>See details</Text>
-          </Pressable>
+          </RipplePressable>
         </View>
 
         {/* Card */}

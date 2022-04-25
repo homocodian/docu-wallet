@@ -20,7 +20,10 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
   },
-  cardSubtitle: {},
+  cardSubtitle: {
+    paddingHorizontal: 5,
+    paddingVertical: 2,
+  },
   card: {
     width: "100%",
     borderRadius: 15,

@@ -64,12 +64,15 @@ const AddDocument = ({ navigation }: RootStackScreenProps<"AddDocument">) => {
   const openPicker = useCallback(async () => {
     try {
       // check for permissions
-      const isPermitted = await storagePermission();
-      setStorageRWPermission(isPermitted);
 
-      if (!isPermitted) {
-        Alert.alert("Give storage permission to save documents");
-        return;
+      if (!storageRWPermission) {
+        const isPermitted = await storagePermission();
+        if (isPermitted) {
+          setStorageRWPermission(isPermitted);
+        } else {
+          Alert.alert("Give storage permission to save documents");
+          return;
+        }
       }
 
       const pickerResult = await DocumentPicker.getDocumentAsync({
@@ -165,7 +168,7 @@ const AddDocument = ({ navigation }: RootStackScreenProps<"AddDocument">) => {
 
     setLoading(false);
     navigation.canGoBack() && navigation.goBack();
-  }, []);
+  }, [docInfo, selectedDocument]);
 
   return (
     <>
