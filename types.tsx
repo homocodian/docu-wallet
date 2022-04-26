@@ -20,7 +20,16 @@ export type RootStackParamList = {
   Modal: undefined;
   NotFound: undefined;
   AddCard: undefined;
-  AddDocument: undefined;
+  AddDocument:
+    | {
+        id: string;
+        documentName: string;
+        uid: string;
+        fileUri: string;
+        fileName: string;
+        screenTitle: string;
+      }
+    | undefined;
   AddNote: undefined;
   DocumentDetail: {
     id: string;

@@ -8,10 +8,12 @@ export type NoteCard = {
 };
 
 export type NoteCardProps = {
-  id: string;
-  note: string;
-  title: string;
   theme: Theme;
+  item: {
+    id: string;
+    note: string;
+    title: string;
+  };
 };
 
 export type NoteMenuProps = {

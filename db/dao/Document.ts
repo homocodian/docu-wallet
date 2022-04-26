@@ -8,7 +8,6 @@ export default {
     name: string;
     uid: string;
     fileName: string;
-    fileSize: number;
     fileUri: string;
   }) => {
     return await database.write(async () => {
@@ -20,16 +19,35 @@ export default {
         // @ts-ignore
         (doc.fileName = body.fileName),
           // @ts-ignore
-          (doc.fileSize = body.fileSize),
-          // @ts-ignore
           (doc.fileUri = body.fileUri);
       });
     });
   },
   deleteDocument: async (id: string) => {
     return await database.write(async () => {
-      const note = await database.get("documents").find(id);
-      note.destroyPermanently();
+      const document = await database.get("documents").find(id);
+      document.destroyPermanently();
+    });
+  },
+  updateDocument: async (body: {
+    id: string;
+    name: string;
+    uid: string;
+    fileName: string;
+    fileUri: string;
+  }) => {
+    return await database.write(async () => {
+      const document = await database.get("documents").find(body.id);
+      document.update((doc) => {
+        // @ts-ignore
+        (doc.name = body.name),
+          // @ts-ignore
+          (doc.uid = body.uid);
+        // @ts-ignore
+        (doc.fileName = body.fileName),
+          // @ts-ignore
+          (doc.fileUri = body.fileUri);
+      });
     });
   },
 };

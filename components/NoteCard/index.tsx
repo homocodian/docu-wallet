@@ -3,12 +3,13 @@ import { Fragment, useState } from "react";
 
 import { IconButton, Text } from "@react-native-material/core";
 import Icon from "@expo/vector-icons/MaterialCommunityIcons";
+import withObservables from "@nozbe/with-observables";
 
 import { NoteCardProps } from "./types";
 import Menu from "./Menu";
 import { styles } from "./styles";
 
-const NoteCard = ({ theme, id, note, title }: NoteCardProps) => {
+const NoteCard = ({ theme, item }: NoteCardProps) => {
   const [visible, setVisible] = useState(false);
 
   return (
@@ -21,7 +22,7 @@ const NoteCard = ({ theme, id, note, title }: NoteCardProps) => {
             color={theme.text}
             style={styles.titleText}
           >
-            {title}
+            {item.title}
           </Text>
           <IconButton
             icon={() => (
@@ -33,7 +34,7 @@ const NoteCard = ({ theme, id, note, title }: NoteCardProps) => {
         </View>
         <View style={{ flex: 1 }}>
           <Text color={theme.text} ellipsizeMode="tail" numberOfLines={7}>
-            {note}
+            {item.note}
           </Text>
         </View>
       </View>
@@ -41,11 +42,13 @@ const NoteCard = ({ theme, id, note, title }: NoteCardProps) => {
         visible={visible}
         setVisible={setVisible}
         theme={theme}
-        note={note}
-        id={id}
+        note={item.note}
+        id={item.id}
       />
     </Fragment>
   );
 };
 
-export default NoteCard;
+export default withObservables(["notes"], ({ notes: item }) => ({
+  item,
+}))(NoteCard);

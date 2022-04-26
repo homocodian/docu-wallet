@@ -1,7 +1,7 @@
 import { appSchema, tableSchema } from "@nozbe/watermelondb";
 
 export default appSchema({
-  version: 4,
+  version: 5,
   tables: [
     tableSchema({
       name: "notes",
@@ -18,7 +18,6 @@ export default appSchema({
         { name: "name", type: "string", isIndexed: true },
         { name: "uid", type: "string" },
         { name: "file_name", type: "string" },
-        { name: "file_size", type: "number" },
         { name: "file_uri", type: "string" },
         { name: "created_at", type: "number" },
         { name: "updated_at", type: "number" },

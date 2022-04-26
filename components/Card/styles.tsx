@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   cardContainer: {
-    marginVertical: 10,
+    marginTop: 10,
   },
   cardHeader: {
     flex: 1,

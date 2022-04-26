@@ -30,28 +30,18 @@ const NoteCardList = ({ theme, notes }: { theme: AppTheme; notes: any }) => {
   return (
     <FlatList
       style={{ ...styles.container, backgroundColor: theme.background }}
+      showsVerticalScrollIndicator={false}
       data={notes}
-      renderItem={({ item }) => (
-        <RenderItem
-          theme={theme}
-          id={item.id}
-          note={item.note}
-          title={item.title}
-        />
-      )}
       contentContainerStyle={styles.contentContainer}
       keyExtractor={(item) => item.id}
       ListEmptyComponent={EmptyComponent}
+      renderItem={({ item }) => <NoteCard theme={theme} notes={item} />}
     />
   );
 };
 
-const enhance = withObservables(["notes"], () => ({
+const enhance = withObservables([], () => ({
   notes: NoteDAO.observerNote(),
 }));
 
 export default enhance(NoteCardList);
-
-function RenderItem({ theme, id, note, title }: NoteCardProps) {
-  return <NoteCard theme={theme} id={id} note={note} title={title} />;
-}

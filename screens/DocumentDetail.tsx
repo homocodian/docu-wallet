@@ -1,13 +1,16 @@
-import { StyleSheet, View, Text as DefaultText, Alert } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
+import { useState } from "react";
 
-import { Text, ActivityIndicator } from "@react-native-material/core";
-import PDFView from "react-native-view-pdf";
+import { Divider, Pressable } from "@react-native-material/core";
+import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import useTheme from "../hooks/useTheme";
 import { RootStackScreenProps } from "../types";
 import ThemedStatusBar from "../components/ThemedStatusBar";
-import { useAppSelector } from "../redux/hooks";
-import { useState } from "react";
+import documentDao from "../db/dao/Document";
+import AlertSnackbar from "../components/Snackbars/AlertSnackbar";
+
+let message = "";
 
 function DocumentDetail({
   navigation,
@@ -15,48 +18,86 @@ function DocumentDetail({
 }: RootStackScreenProps<"DocumentDetail">) {
   const data = route.params;
   const theme = useTheme();
-  const isDarkMode = useAppSelector((state) => state.appTheme.isDark);
-  const [loading, setLoading] = useState(true);
+  const [visible, setVisible] = useState(false);
 
-  const onErrorLoading = () => {
-    Alert.alert("Error!", "Failed to load pdf");
+  const deleteDocument = async () => {
+    try {
+      await documentDao.deleteDocument(data.id);
+      navigation.canGoBack() ? navigation.goBack() : navigation.pop();
+    } catch (error) {
+      message = "Failed to delete";
+      setVisible(true);
+    }
+  };
+
+  const editDocument = () => {
+    navigation.replace("AddDocument", {
+      id: data.id,
+      documentName: data.name,
+      fileName: data.fileName,
+      fileUri: data.fileUri,
+      uid: data.uid,
+      screenTitle: "Edit Document",
+    });
   };
 
   return (
     <View style={{ ...styles.container, backgroundColor: theme.background }}>
       <ThemedStatusBar />
 
-      {/* Header */}
-      <View style={{ padding: 15 }}>
-        {/* document name and date created at */}
-        <View style={styles.row}>
-          <Text style={{ color: theme.text }}>{data.name}</Text>
-          <DefaultText style={{ color: isDarkMode ? "#fffA" : "#12121280" }}>
-            {data.createdAt}
-          </DefaultText>
-        </View>
+      <View style={{ marginTop: 30 }}>
+        {/* edit button */}
+        <Divider style={{ height: 2 }} />
+        <Pressable
+          style={styles.editButton}
+          pressEffectColor="#ccc"
+          onPress={editDocument}
+        >
+          {/* @ts-ignore */}
+          <AntDesign name="edit" size={24} color={theme.tint} />
+          <Text style={{ ...styles.editButtonText, color: theme.text }}>
+            Edit Document
+          </Text>
+        </Pressable>
 
-        {/* uid & filename */}
-        <View style={{ ...styles.row, marginTop: 15 }}>
-          <DefaultText style={{ color: theme.text }} ellipsizeMode="tail">
-            UID: {data.uid}
-          </DefaultText>
-          <DefaultText style={{ color: theme.text }} ellipsizeMode="tail">
-            Filename: {data.fileName}
-          </DefaultText>
-        </View>
+        <Divider style={{ height: 2 }} />
+
+        {/* delete button */}
+        <Pressable
+          style={styles.editButton}
+          pressEffectColor="#ccc"
+          onPress={deleteDocument}
+        >
+          {/* @ts-ignore */}
+          <MaterialCommunityIcons
+            name="delete-outline"
+            size={24}
+            color={theme.tint}
+          />
+          <Text style={{ ...styles.editButtonText, color: theme.text }}>
+            Delete Document
+          </Text>
+        </Pressable>
+        <Divider style={{ height: 2 }} />
       </View>
-
-      {/* pdf view */}
-      {/* @ts-ignore */}
-      <PDFView
-        style={{ flex: 1 }}
-        resource={data.fileUri}
-        resourceType="file"
-        onLoad={() => setLoading(false)}
-        onError={onErrorLoading}
+      {/* document detail */}
+      <View
+        style={{
+          marginTop: 30,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text style={styles.text}>
+          Name: {data.name}, UID: {data.uid}
+        </Text>
+        <Text style={styles.text}>Document Created: {data.createdAt}</Text>
+      </View>
+      <AlertSnackbar
+        visible={visible}
+        setVisible={setVisible}
+        message={message}
       />
-      {loading && <ActivityIndicator color="green" size="large" />}
     </View>
   );
 }
@@ -71,5 +112,20 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  editButton: {
+    paddingHorizontal: 20,
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 15,
+  },
+  editButtonText: {
+    marginLeft: 15,
+    fontSize: 17,
+  },
+  text: {
+    fontSize: 16,
+    color: "gray",
+    fontWeight: "300",
   },
 });

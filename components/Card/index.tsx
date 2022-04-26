@@ -3,6 +3,7 @@ import { View, Text, Image, Alert } from "react-native";
 
 import { Pressable, IconButton } from "@react-native-material/core";
 import { AntDesign, SimpleLineIcons, MaterialIcons } from "@expo/vector-icons";
+import WithObservables from "@nozbe/with-observables";
 
 import { CardProps } from "./types";
 import { styles } from "./styles";
@@ -11,13 +12,7 @@ import { useNavigation } from "@react-navigation/native";
 
 function Card({
   theme,
-  id,
-  cardName,
-  backImageUri,
-  cardNumber,
-  frontImageUri,
-  createdAt,
-  updateAt,
+  item: { id, cardName, backImageUri, cardNumber, frontImageUri },
 }: CardProps) {
   const navigation = useNavigation();
 
@@ -122,4 +117,6 @@ function Card({
   );
 }
 
-export default Card;
+export default WithObservables(["cards"], ({ cards: item }) => ({
+  item,
+}))(Card);

@@ -4,11 +4,11 @@ import {
   Text,
   StyleSheet,
   TextInput,
-  Pressable as DefaultPressable,
+  Pressable,
   Image,
 } from "react-native";
 
-import { Pressable, Stack } from "@react-native-material/core";
+import { Stack } from "@react-native-material/core";
 import Icon from "@expo/vector-icons/MaterialIcons";
 import * as ImagePicker from "expo-image-picker";
 import LottieView from "lottie-react-native";
@@ -201,7 +201,7 @@ const AddCard = ({ navigation }: RootStackScreenProps<"AddCard">) => {
         {/* image container */}
         <View style={styles.boxContainer}>
           {/* front image */}
-          <DefaultPressable
+          <Pressable
             style={{
               ...styles.box,
               backgroundColor: isDarkMode ? "#141313" : "#F9F9F9",
@@ -226,9 +226,9 @@ const AddCard = ({ navigation }: RootStackScreenProps<"AddCard">) => {
                 </Text>
               </>
             )}
-          </DefaultPressable>
+          </Pressable>
           {/* back image */}
-          <DefaultPressable
+          <Pressable
             style={{
               ...styles.box,
               backgroundColor: isDarkMode ? "#141313" : "#F9F9F9",
@@ -253,7 +253,7 @@ const AddCard = ({ navigation }: RootStackScreenProps<"AddCard">) => {
                 </Text>
               </>
             )}
-          </DefaultPressable>
+          </Pressable>
         </View>
 
         {/* save card button */}

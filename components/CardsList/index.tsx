@@ -5,51 +5,19 @@ import WithObservables from "@nozbe/with-observables";
 
 import Card from "../Card";
 import { CardsListProps } from "./types";
-import { CardDetails } from "../../types";
+import { AppTheme } from "../../types";
 import { isSmallDevice } from "../../constants/Layout";
 import { styles } from "./styles";
 import cardDao from "../../db/dao/Card";
 
 const CardsList = ({ theme, cards }: CardsListProps) => {
-  const RenderItem = ({ item }: ListRenderItemInfo<CardDetails>) => {
-    return (
-      <Card
-        theme={theme}
-        id={item?.id}
-        cardName={item?.cardName}
-        cardNumber={item?.cardNumber}
-        backImageUri={item?.backImageUri}
-        frontImageUri={item?.frontImageUri}
-        createdAt={item?.createdAt}
-        updateAt={item?.updateAt}
-      />
-    );
-  };
-
-  function EmptyComponent() {
-    return (
-      <View style={styles.emptyComponent}>
-        {/* @ts-ignore */}
-        <Caption
-          style={{
-            fontSize: isSmallDevice ? 14 : 16,
-            color: theme.secondaryText,
-          }}
-        >
-          No card to show, add one to see here!
-        </Caption>
-      </View>
-    );
-  }
-
   return (
     <View style={styles.container}>
       <FlatList
         data={cards}
-        renderItem={RenderItem}
+        renderItem={({ item }) => <Card theme={theme} cards={item} />}
         keyExtractor={(data) => data.id}
         showsVerticalScrollIndicator={false}
-        showsHorizontalScrollIndicator={false}
         style={{
           width: "100%",
           paddingHorizontal: 15,
@@ -57,16 +25,32 @@ const CardsList = ({ theme, cards }: CardsListProps) => {
           backgroundColor: theme.background,
         }}
         contentContainerStyle={{
-          paddingBottom: 72,
+          paddingBottom: 88,
         }}
-        ListEmptyComponent={EmptyComponent}
+        ListEmptyComponent={() => <EmptyComponent theme={theme} />}
       />
     </View>
   );
 };
 
-const enhance = WithObservables(["cards"], () => ({
+const enhance = WithObservables([], () => ({
   cards: cardDao.observerCard(),
 }));
 
 export default enhance(CardsList);
+
+function EmptyComponent({ theme }: { theme: AppTheme }) {
+  return (
+    <View style={styles.emptyComponent}>
+      {/* @ts-ignore */}
+      <Caption
+        style={{
+          fontSize: isSmallDevice ? 14 : 16,
+          color: theme.secondaryText,
+        }}
+      >
+        No card to show, add one to see here!
+      </Caption>
+    </View>
+  );
+}

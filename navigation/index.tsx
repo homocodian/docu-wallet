@@ -89,12 +89,15 @@ function RootNavigator() {
       <Stack.Screen
         name="AddDocument"
         component={AddDocument}
-        options={{
+        options={({ route }) => ({
           headerShown: true,
           header: (props) => (
-            <NavHeader title="Add Document" headerProps={props} />
+            <NavHeader
+              title={route.params?.screenTitle || "Add Document"}
+              headerProps={props}
+            />
           ),
-        }}
+        })}
       />
       <Stack.Screen
         name="AddNote"

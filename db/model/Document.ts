@@ -7,7 +7,6 @@ export default class Document extends Model {
   @field("name") name;
   @text("uid") uid;
   @text("file_name") fileName;
-  @text("file_size") fileSize;
   @text("file_uri") fileUri;
   @readonly @date("created_at") createdAt;
   @readonly @date("updated_at") updatedAt;

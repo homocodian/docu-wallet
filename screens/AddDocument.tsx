@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import {
   View,
   Text,
@@ -8,7 +8,10 @@ import {
   Alert,
 } from "react-native";
 
-import { Stack } from "@react-native-material/core";
+import {
+  Stack,
+  Pressable as StyledPressable,
+} from "@react-native-material/core";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import * as DocumentPicker from "expo-document-picker";
 import LottieView from "lottie-react-native";
@@ -30,36 +33,40 @@ interface PickerResult {
   lastModified?: number | undefined;
   file?: File | undefined;
   output?: FileList | null | undefined;
-  base64PDF: any;
 }
 
-const AddDocument = ({ navigation }: RootStackScreenProps<"AddDocument">) => {
+const AddDocument = ({
+  navigation,
+  route,
+}: RootStackScreenProps<"AddDocument">) => {
+  const docToEdit = route.params;
+
   const theme = useTheme();
   const isDarkMode = useAppSelector((state) => state.appTheme.isDark);
   const [selectedDocument, setSelectedDocument] = useState<PickerResult | null>(
-    null
+    docToEdit
+      ? {
+          type: "success",
+          name: docToEdit.fileName,
+          uri: docToEdit.fileUri,
+        }
+      : null
   );
 
-  const [docInfo, setDocInfo] = useState({
-    docName: "",
-    docUid: "",
-  });
+  const [docName, setDocName] = useState(
+    docToEdit ? docToEdit.documentName : ""
+  );
+  const [docUID, setDocUID] = useState(docToEdit ? docToEdit.uid : "");
   const [loading, setLoading] = useState(false);
   const [storageRWPermission, setStorageRWPermission] = useState(false);
 
-  const onDocNameChange = (text: string) => {
-    setDocInfo((prev) => ({
-      ...prev,
-      docName: text,
-    }));
-  };
-
-  const onDocUidChange = (text: string) => {
-    setDocInfo((prev) => ({
-      ...prev,
-      docUid: text,
-    }));
-  };
+  useEffect(() => {
+    const checkPermission = async () => {
+      const isPermitted = await storagePermission();
+      setStorageRWPermission(isPermitted);
+    };
+    checkPermission();
+  }, []);
 
   const openPicker = useCallback(async () => {
     try {
@@ -70,7 +77,10 @@ const AddDocument = ({ navigation }: RootStackScreenProps<"AddDocument">) => {
         if (isPermitted) {
           setStorageRWPermission(isPermitted);
         } else {
-          Alert.alert("Give storage permission to save documents");
+          Alert.alert(
+            "Permission!",
+            "Give storage permission to save documents"
+          );
           return;
         }
       }
@@ -81,37 +91,45 @@ const AddDocument = ({ navigation }: RootStackScreenProps<"AddDocument">) => {
       });
 
       if (pickerResult.type === "cancel") return;
-      const base64PDF = await RNFetchBlob.fs.readFile(
-        pickerResult.uri,
-        "base64"
-      );
-      setSelectedDocument({ ...pickerResult, base64PDF });
+      setSelectedDocument(pickerResult);
     } catch (error) {
       Alert.alert("Alert!", "Failed to pick file");
     }
   }, []);
 
   const addDocument = useCallback(
-    async (
-      name: string,
-      uid: string,
-      fileName: string,
-      fileSize: number,
-      fileUri: string
-    ) => {
-      await documentDao.createDocument({
+    async (name: string, uid: string, fileName: string, fileUri: string) => {
+      return await documentDao.createDocument({
         name: name,
         uid: uid,
         fileName: fileName,
-        fileSize: fileSize,
         fileUri: fileUri,
       });
     },
     []
   );
 
+  const updateDocument = useCallback(
+    async (
+      id: string,
+      name: string,
+      uid: string,
+      fileName: string,
+      fileUri: string
+    ) => {
+      return await documentDao.updateDocument({
+        id,
+        name,
+        uid,
+        fileName,
+        fileUri,
+      });
+    },
+    []
+  );
+
   const saveDocument = useCallback(async () => {
-    if (!docInfo.docName || !docInfo.docUid || !selectedDocument) {
+    if (!docName || !docUID || !selectedDocument) {
       Alert.alert("Invalid data!", "Provide name, uid and file");
       return;
     }
@@ -119,6 +137,7 @@ const AddDocument = ({ navigation }: RootStackScreenProps<"AddDocument">) => {
     setLoading(true);
 
     if (!storageRWPermission) {
+      setLoading(false);
       Alert.alert("Alert!", "Please give storage permission to save document");
       return;
     }
@@ -126,7 +145,6 @@ const AddDocument = ({ navigation }: RootStackScreenProps<"AddDocument">) => {
     const path =
       (await RNFetchBlob.android.getSDCardApplicationDir()) + "/documents";
     const fileName = path + `/${selectedDocument.name}`;
-    const fileSize = selectedDocument.size || 0;
 
     const isDir = await RNFetchBlob.fs.isDir(path);
 
@@ -134,33 +152,45 @@ const AddDocument = ({ navigation }: RootStackScreenProps<"AddDocument">) => {
       try {
         await RNFetchBlob.fs.mkdir(path + "/documents");
       } catch (error) {
-        Alert.alert("Failed to create folder, please check storage permission");
+        Alert.alert(
+          "Failed!",
+          "Failed to create folder, please check storage permission"
+        );
+        setLoading(false);
         return;
       }
     }
 
     try {
       if (await RNFetchBlob.fs.exists(fileName)) {
-        await addDocument(
-          docInfo.docName,
-          docInfo.docUid,
-          selectedDocument.name,
-          fileSize,
-          fileName
-        );
+        if (docToEdit) {
+          await updateDocument(
+            docToEdit.id,
+            docName,
+            docUID,
+            selectedDocument.name,
+            fileName
+          );
+        } else {
+          await addDocument(docName, docUID, selectedDocument.name, fileName);
+        }
       } else {
-        await RNFetchBlob.fs.createFile(
-          fileName,
-          selectedDocument.base64PDF,
+        const base64PDF = await RNFetchBlob.fs.readFile(
+          selectedDocument.uri,
           "base64"
         );
-        await addDocument(
-          docInfo.docName,
-          docInfo.docUid,
-          selectedDocument.name,
-          fileSize,
-          fileName
-        );
+        await RNFetchBlob.fs.createFile(fileName, base64PDF, "base64");
+        if (docToEdit) {
+          await updateDocument(
+            docToEdit.id,
+            docName,
+            docUID,
+            selectedDocument.name,
+            fileName
+          );
+        } else {
+          await addDocument(docName, docUID, selectedDocument.name, fileName);
+        }
       }
     } catch (error) {
       Alert.alert("Failed to save document");
@@ -168,7 +198,7 @@ const AddDocument = ({ navigation }: RootStackScreenProps<"AddDocument">) => {
 
     setLoading(false);
     navigation.canGoBack() && navigation.goBack();
-  }, [docInfo, selectedDocument]);
+  }, [docName, docUID, selectedDocument]);
 
   return (
     <>
@@ -183,6 +213,7 @@ const AddDocument = ({ navigation }: RootStackScreenProps<"AddDocument">) => {
         }}
       >
         <Stack spacing={26} style={styles.stack}>
+          {/* document name input */}
           <TextInput
             style={{
               ...styles.input,
@@ -192,8 +223,10 @@ const AddDocument = ({ navigation }: RootStackScreenProps<"AddDocument">) => {
             placeholder="Document Name"
             placeholderTextColor={isDarkMode ? "#666161" : "#C4C4C4"}
             selectionColor={isDarkMode ? "#fff" : "#121212"}
-            onChange={({ nativeEvent: { text } }) => onDocNameChange(text)}
+            onChangeText={setDocName}
+            value={docName}
           />
+          {/* uid or document number */}
           <TextInput
             placeholder="UID"
             style={{
@@ -203,7 +236,8 @@ const AddDocument = ({ navigation }: RootStackScreenProps<"AddDocument">) => {
             }}
             placeholderTextColor={isDarkMode ? "#666161" : "#C4C4C4"}
             selectionColor={isDarkMode ? "#fff" : "#121212"}
-            onChange={({ nativeEvent: { text } }) => onDocUidChange(text)}
+            onChangeText={setDocUID}
+            value={docUID}
           />
         </Stack>
         <View style={{ marginTop: 27 }}>
@@ -249,6 +283,17 @@ const AddDocument = ({ navigation }: RootStackScreenProps<"AddDocument">) => {
               }}
             />
             <Text style={{ color: theme.text }}>{selectedDocument?.name}</Text>
+            <StyledPressable
+              onPress={() => setSelectedDocument(null)}
+              pressEffectColor="#ccc"
+              style={{
+                paddingHorizontal: 10,
+                paddingVertical: 5,
+                marginTop: 10,
+              }}
+            >
+              <Text style={{ color: theme.text, fontSize: 17 }}>Remove</Text>
+            </StyledPressable>
           </View>
         )}
         <Pressable
@@ -272,7 +317,7 @@ const AddDocument = ({ navigation }: RootStackScreenProps<"AddDocument">) => {
             <Text
               style={{ color: theme.text, fontSize: 16, fontWeight: "600" }}
             >
-              Save Card
+              {docToEdit ? "Save Changes" : "Save Card"}
             </Text>
           )}
         </Pressable>
@@ -296,6 +341,7 @@ const styles = StyleSheet.create({
     height: 59,
     borderRadius: 20,
     paddingHorizontal: 15,
+    fontSize: 20,
   },
   uploadText: {
     color: "#939090",

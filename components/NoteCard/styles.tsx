@@ -5,10 +5,10 @@ export const styles = StyleSheet.create({
     width: "100%",
     borderWidth: 1,
     borderColor: "#C4C4C4",
-    marginBottom: 15,
     borderRadius: 6,
     paddingHorizontal: 12,
     paddingVertical: 10,
+    marginTop: 20,
   },
   header: {
     flexDirection: "row",

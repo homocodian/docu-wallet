@@ -1,11 +1,15 @@
 import { useCallback } from "react";
-import { View, Text, Pressable, Alert, Image } from "react-native";
+import { View, Text, Pressable, Alert, Image, Platform } from "react-native";
 
 import {
+  ActivityIndicator,
   IconButton,
   Pressable as RipplePressable,
 } from "@react-native-material/core";
 import { AntDesign, SimpleLineIcons, MaterialIcons } from "@expo/vector-icons";
+import Pdf from "react-native-pdf";
+import RNFetchBlob from "react-native-blob-util";
+import WithObservables from "@nozbe/with-observables";
 
 import { Fragment } from "react";
 import { DocumentProps } from "./types";
@@ -36,6 +40,18 @@ function DocumentCard({ theme, item, navigation }: DocumentProps) {
     });
   }, []);
 
+  const openPdf = () => {
+    if (Platform.OS === "ios") {
+      RNFetchBlob.ios.openDocument(item.fileUri);
+    } else {
+      try {
+        RNFetchBlob.android.actionViewIntent(item.fileUri, "application/pdf");
+      } catch (error) {
+        Alert.alert("Alert!", "Failed to share document");
+      }
+    }
+  };
+
   return (
     // card
     <Fragment>
@@ -54,22 +70,27 @@ function DocumentCard({ theme, item, navigation }: DocumentProps) {
           </RipplePressable>
         </View>
 
-        {/* Card */}
-        <View
+        {/*document card */}
+        <Pressable
           style={{
             ...styles.card,
             backgroundColor: theme.background,
             borderColor: theme.tint,
           }}
+          onPress={openPdf}
         >
-          <Image
-            source={require("../../assets/images/pdf.png")}
-            style={{
-              resizeMode: "cover",
-            }}
+          {/* @ts-ignore */}
+          <Pdf
+            source={{ uri: `file:///${item.fileUri}` }}
+            style={{ aspectRatio: 16 / 9 }}
+            renderActivityIndicator={() => (
+              <ActivityIndicator color="green" size="large" />
+            )}
+            enablePaging
+            singlePage
+            onError={(err) => console.log(err)}
           />
-          <Text style={{ color: theme.text }}> {item.fileName} </Text>
-        </View>
+        </Pressable>
 
         {/* card footer */}
         <View style={styles.cardFooter}>
@@ -111,4 +132,6 @@ function DocumentCard({ theme, item, navigation }: DocumentProps) {
   );
 }
 
-export default DocumentCard;
+export default WithObservables(["documents"], ({ documents: item }) => ({
+  item,
+}))(DocumentCard);

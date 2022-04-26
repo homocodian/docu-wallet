@@ -1,4 +1,5 @@
-import { StyleSheet } from "react-native";
+import { StatusBar, StyleSheet } from "react-native";
+
 import { window } from "../../constants/Layout";
 
 export const styles = StyleSheet.create({
@@ -8,7 +9,9 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
   },
   emptyComponent: {
-    height: window.height,
+    height:
+      window.height -
+      (StatusBar.currentHeight ? StatusBar.currentHeight + 100 : 140),
     justifyContent: "center",
     alignItems: "center",
   },

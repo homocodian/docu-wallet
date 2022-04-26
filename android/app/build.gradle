@@ -195,7 +195,6 @@ android {
 
 dependencies {
 	implementation project(':watermelondb')
-    implementation project(':react-native-view-pdf')
     implementation project(':lottie-react-native')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
