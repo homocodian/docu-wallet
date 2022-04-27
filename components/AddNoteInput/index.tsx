@@ -27,16 +27,12 @@ const AddNoteInput = ({
   const { titleText, noteText } = useAppSelector((state) => state.addNote);
   const dispatch = useAppDispatch();
 
-  const onTitleTextChage = (
-    e: NativeSyntheticEvent<TextInputChangeEventData>
-  ) => {
-    dispatch(setTitleText({ text: e.nativeEvent.text }));
+  const onTitleTextChage = (text: string) => {
+    dispatch(setTitleText({ text: text }));
   };
 
-  const onNoteTextChage = (
-    e: NativeSyntheticEvent<TextInputChangeEventData>
-  ) => {
-    dispatch(setNoteText({ note: e.nativeEvent.text }));
+  const onNoteTextChage = (text: string) => {
+    dispatch(setNoteText({ note: text }));
   };
 
   return (
@@ -52,7 +48,7 @@ const AddNoteInput = ({
           placeholder="Title"
           placeholderTextColor={"#C4C4C4"}
           selectionColor={theme.tint}
-          onChange={onTitleTextChage}
+          onChangeText={onTitleTextChage}
           blurOnSubmit
           value={titleText}
         />
@@ -74,7 +70,7 @@ const AddNoteInput = ({
           selectionColor={theme.tint}
           style={{ ...styles.noteInput, color: theme.text }}
           placeholderTextColor={"#C4C4C4"}
-          onChange={onNoteTextChage}
+          onChangeText={onNoteTextChage}
           value={noteText}
         />
       </View>

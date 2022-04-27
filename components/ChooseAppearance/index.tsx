@@ -1,12 +1,7 @@
 import { View, Text } from "react-native";
 
-import {
-  Dialog,
-  Portal,
-  Headline,
-  RadioButton,
-  Divider,
-} from "react-native-paper";
+import { RadioButton } from "react-native-paper";
+import { Divider } from "@react-native-material/core";
 
 import { Appearance, AppAppearanceDialogProps } from "./types";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
@@ -14,6 +9,7 @@ import { setAppAppearance } from "../../redux/features/appTheme/appThemeSlice";
 import useTheme from "../../hooks/useTheme";
 import useColorScheme from "../../hooks/useColorScheme";
 import { styles } from "./styles";
+import Dialog from "../Dialog";
 
 const ChooseAppearance = ({
   visible,
@@ -34,31 +30,30 @@ const ChooseAppearance = ({
   };
 
   return (
-    // @ts-ignore
-    <Portal>
-      {/* @ts-ignore */}
-      <Dialog
-        visible={visible}
-        onDismiss={setVisible.off}
-        theme={{
-          colors: {
-            background: theme.background,
-            primary: theme.primary,
-            surface: theme.background,
-          },
-          mode: "exact",
-          dark: isDark,
+    <Dialog
+      visible={visible}
+      onDismiss={setVisible.off}
+      onRequestClose={setVisible.off}
+    >
+      <View
+        style={{
+          backgroundColor: theme.background,
+          borderRadius: 4,
+          width: 300,
         }}
       >
-        {/* @ts-ignore */}
-        <Dialog.Title>
-          <Headline style={{ color: theme.text, fontSize: 20 }}>
+        <View style={{ padding: 10, marginTop: 10, paddingLeft: 20 }}>
+          <Text style={{ ...styles.title, color: theme.text }}>
             Choose Appearance
-          </Headline>
-        </Dialog.Title>
-        {/* @ts-ignore */}
-        <Divider />
-        <Dialog.Content>
+          </Text>
+        </View>
+        <Divider color={isDark ? "#121212" : "#ccc"} />
+        <View
+          style={{
+            padding: 15,
+            paddingTop: 5,
+          }}
+        >
           <RadioButton.Group
             onValueChange={(newValue) => {
               setVisible.off();
@@ -114,9 +109,9 @@ const ChooseAppearance = ({
               </Text>
             </View>
           </RadioButton.Group>
-        </Dialog.Content>
-      </Dialog>
-    </Portal>
+        </View>
+      </View>
+    </Dialog>
   );
 };
 

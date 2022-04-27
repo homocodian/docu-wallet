@@ -7,8 +7,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import useTheme from "../../hooks/useTheme";
 import { NavHeaderProps } from "./types";
-import { useAppDispatch } from "../../redux/hooks";
-import { saveNote } from "../../redux/features/addNote/addNoteSlice";
 import { styles } from "./styles";
 
 const NavHeader = ({
@@ -17,7 +15,6 @@ const NavHeader = ({
   back,
 }: NavHeaderProps) => {
   const theme = useTheme();
-  const dispatch = useAppDispatch();
 
   return (
     <SafeAreaView>
@@ -30,7 +27,6 @@ const NavHeader = ({
                 <AntDesign name="arrowleft" size={20} color={theme.tint} />
               )}
               onPress={() => {
-                dispatch(saveNote());
                 navigation.canGoBack() ? navigation.goBack() : navigation.pop();
               }}
             />

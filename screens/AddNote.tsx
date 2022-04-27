@@ -2,13 +2,23 @@ import { StyleSheet, View } from "react-native";
 
 import { StatusBar } from "expo-status-bar";
 
-import { useAppSelector } from "../redux/hooks";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import useTheme from "../hooks/useTheme";
 import AddNoteInput from "../components/AddNoteInput";
+import { useEffect } from "react";
+import { RootStackScreenProps } from "../types";
+import { saveNote } from "../redux/features/addNote/addNoteSlice";
 
-const AddNote = () => {
+const AddNote = ({}: RootStackScreenProps<"AddNote">) => {
   const isDarkMode = useAppSelector((state) => state.appTheme.isDark);
   const theme = useTheme();
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    return () => {
+      dispatch(saveNote());
+    };
+  }, []);
 
   return (
     <>

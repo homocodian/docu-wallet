@@ -8,6 +8,10 @@ export const styles = StyleSheet.create({
   },
   spacedText: {
     marginLeft: 8,
-    fontSize: 16,
+    fontSize: 18,
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "600",
   },
 });
