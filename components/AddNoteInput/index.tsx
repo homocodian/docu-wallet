@@ -1,23 +1,17 @@
-import {
-  NativeSyntheticEvent,
-  Text,
-  TextInput,
-  TextInputChangeEventData,
-  View,
-} from "react-native";
+import { Text, TextInput, View } from "react-native";
 
 import dayjs from "dayjs";
 
 import { Divider } from "@react-native-material/core";
 import { AppTheme, RootStackParamList } from "../../types";
+import { styles } from "./styles";
+import { RouteProp } from "@react-navigation/native";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   setNoteText,
   setTitleText,
 } from "../../redux/features/addNote/addNoteSlice";
-import { styles } from "./styles";
-import { RouteProp } from "@react-navigation/native";
-import { useEffect } from "react";
 
 const AddNoteInput = ({
   theme,
@@ -30,14 +24,6 @@ const AddNoteInput = ({
 }) => {
   const { titleText, noteText } = useAppSelector((state) => state.addNote);
   const dispatch = useAppDispatch();
-
-  const onTitleTextChage = (text: string) => {
-    dispatch(setTitleText({ text: text }));
-  };
-
-  const onNoteTextChage = (text: string) => {
-    dispatch(setNoteText({ note: text }));
-  };
 
   useEffect(() => {
     if (route.params) {
@@ -58,14 +44,15 @@ const AddNoteInput = ({
           numberOfLines={2}
           placeholder="Title"
           placeholderTextColor={"#C4C4C4"}
-          selectionColor={theme.tint}
-          onChangeText={onTitleTextChage}
+          onChangeText={(text) => dispatch(setTitleText(text))}
           blurOnSubmit
           value={titleText}
         />
       </View>
       <Text style={{ color: "#C4C4C4" }}>
-        {dayjs(Date.now()).format("DD MMMM YYYY")}
+        {route.params
+          ? route.params.dateCreated
+          : dayjs(Date.now()).format("MMM DD, YYYY")}
       </Text>
       <Divider
         style={{
@@ -74,14 +61,13 @@ const AddNoteInput = ({
           backgroundColor: isDarkMode ? "#656262" : "#C4C4C4",
         }}
       />
-      <View style={{ flex: 1 }}>
+      <View style={{ flex: 1, paddingBottom: 10 }}>
         <TextInput
           placeholder="Note"
           multiline
-          selectionColor={theme.tint}
           style={{ ...styles.noteInput, color: theme.text }}
           placeholderTextColor={"#C4C4C4"}
-          onChangeText={onNoteTextChage}
+          onChangeText={(text) => dispatch(setNoteText(text))}
           value={noteText}
         />
       </View>

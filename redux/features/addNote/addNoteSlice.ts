@@ -48,15 +48,35 @@ export const deleteNote = createAsyncThunk(
   }
 );
 
+export const updateNote = createAsyncThunk(
+  "note/update",
+  async (id: string, thunkAPI) => {
+    const { addNote }: any = thunkAPI.getState();
+    try {
+      if (!addNote.titleText || !addNote.noteText) {
+        return false;
+      }
+      await NoteDao.updateNote({
+        id,
+        title: addNote.titleText,
+        note: addNote.noteText,
+      });
+      return true;
+    } catch (error) {
+      thunkAPI.rejectWithValue(false);
+    }
+  }
+);
+
 const addNoteSlice = createSlice({
   name: "AddNote",
   initialState,
   reducers: {
     setTitleText: (state, action) => {
-      state.titleText = action.payload.text;
+      state.titleText = action.payload;
     },
     setNoteText: (state, action) => {
-      state.noteText = action.payload.note;
+      state.noteText = action.payload;
     },
     reset: (state) => {
       (state.titleText = ""), (state.noteText = "");
@@ -77,6 +97,20 @@ const addNoteSlice = createSlice({
         state.isLoading = false;
       })
       .addCase(saveNote.rejected, (state) => {
+        (state.titleText = ""), (state.noteText = "");
+        (state.isNoteSaved = false), (state.isError = true);
+        state.isLoading = false;
+      })
+      .addCase(updateNote.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateNote.fulfilled, (state, action) => {
+        if (!action.payload) return;
+        (state.titleText = ""), (state.noteText = "");
+        (state.isNoteSaved = true), (state.isError = false);
+        state.isLoading = false;
+      })
+      .addCase(updateNote.rejected, (state) => {
         (state.titleText = ""), (state.noteText = "");
         (state.isNoteSaved = false), (state.isError = true);
         state.isLoading = false;

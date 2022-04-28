@@ -44,6 +44,8 @@ const NoteCard = ({ theme, item }: NoteCardProps) => {
         theme={theme}
         note={item.note}
         id={item.id}
+        title={item.title}
+        date={item.createdAt}
       />
     </Fragment>
   );

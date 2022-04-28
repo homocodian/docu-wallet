@@ -7,7 +7,7 @@ import useTheme from "../hooks/useTheme";
 import AddNoteInput from "../components/AddNoteInput";
 import { useEffect } from "react";
 import { RootStackScreenProps } from "../types";
-import { saveNote } from "../redux/features/addNote/addNoteSlice";
+import { saveNote, updateNote } from "../redux/features/addNote/addNoteSlice";
 
 const AddNote = ({ route }: RootStackScreenProps<"AddNote">) => {
   const isDarkMode = useAppSelector((state) => state.appTheme.isDark);
@@ -16,7 +16,11 @@ const AddNote = ({ route }: RootStackScreenProps<"AddNote">) => {
 
   useEffect(() => {
     return () => {
-      dispatch(saveNote());
+      if (route.params) {
+        dispatch(updateNote(route.params.id));
+      } else {
+        dispatch(saveNote());
+      }
     };
   }, []);
 

@@ -35,6 +35,7 @@ export type RootStackParamList = {
         id: string;
         title: string;
         note: string;
+        dateCreated: string;
       }
     | undefined;
   DocumentDetail: {

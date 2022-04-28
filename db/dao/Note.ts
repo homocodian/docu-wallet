@@ -20,4 +20,15 @@ export default {
       note.destroyPermanently();
     });
   },
+  updateNote: async (body: { id: string; title: string; note: string }) => {
+    return await database.write(async () => {
+      const note = await database.get("notes").find(body.id);
+      note.update((noteToBeUpdated) => {
+        // @ts-ignore
+        (noteToBeUpdated.title = body.title),
+          // @ts-ignore
+          (noteToBeUpdated.note = body.note);
+      });
+    });
+  },
 };

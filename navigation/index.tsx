@@ -105,7 +105,11 @@ function RootNavigator() {
         options={{
           headerShown: true,
           header: (props) => (
-            <NavHeader title="Add Note" headerProps={props} back />
+            <NavHeader
+              title={props.route.params ? "Update Note" : "Add Note"}
+              headerProps={props}
+              back
+            />
           ),
         }}
       />

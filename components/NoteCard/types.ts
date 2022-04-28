@@ -13,6 +13,7 @@ export type NoteCardProps = {
     id: string;
     note: string;
     title: string;
+    createdAt: Date;
   };
 };
 
@@ -22,4 +23,6 @@ export type NoteMenuProps = {
   theme: AppTheme;
   note: string;
   id: string;
+  title: string;
+  date: Date;
 };
