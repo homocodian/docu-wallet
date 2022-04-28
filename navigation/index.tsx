@@ -29,6 +29,7 @@ import { NativeColorScheme } from "../redux/features/appTheme/types";
 import { StatusBar } from "expo-status-bar";
 import DocumentDetail from "../screens/DocumentDetail";
 import ShowImages from "../screens/ShowImages";
+import CardDetail from "../screens/CardDetail";
 
 export default function Navigation({
   ColorScheme,
@@ -120,6 +121,16 @@ function RootNavigator() {
           headerShown: true,
           header: (props) => (
             <NavHeader title="Document Details" headerProps={props} />
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="CardDetail"
+        component={CardDetail}
+        options={{
+          headerShown: true,
+          header: (props) => (
+            <NavHeader title="Card Details" headerProps={props} />
           ),
         }}
       />

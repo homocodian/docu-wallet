@@ -12,7 +12,15 @@ import { useNavigation } from "@react-navigation/native";
 
 function Card({
   theme,
-  item: { id, cardName, backImageUri, cardNumber, frontImageUri },
+  item: {
+    id,
+    cardName,
+    backImageUri,
+    cardNumber,
+    frontImageUri,
+    createdAt,
+    updatedAt,
+  },
 }: CardProps) {
   const navigation = useNavigation();
 
@@ -33,6 +41,18 @@ function Card({
     });
   };
 
+  const openDetails = () => {
+    navigation.navigate("CardDetail", {
+      id,
+      cardName,
+      cardNumber,
+      backImageUri,
+      createdAt: createdAt.toDateString(),
+      frontImageUri,
+      updatedAt: updatedAt.toDateString(),
+    });
+  };
+
   return (
     // card
     <Fragment>
@@ -42,7 +62,11 @@ function Card({
           <Text style={{ ...styles.cardTitle, color: theme.text }}>
             {cardName}
           </Text>
-          <Pressable style={styles.cardSubtitle} pressEffectColor="#ccc">
+          <Pressable
+            style={styles.cardSubtitle}
+            pressEffectColor="#ccc"
+            onPress={openDetails}
+          >
             <Text
               style={{
                 color: theme.secondaryText,

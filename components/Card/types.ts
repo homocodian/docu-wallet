@@ -33,6 +33,6 @@ export type CardProps = {
     frontImageUri: string;
     backImageUri: string;
     createdAt: Date;
-    updateAt: Date;
+    updatedAt: Date;
   };
 };

@@ -52,6 +52,15 @@ export type RootStackParamList = {
     frontImageUri: string;
     backImageUri: string;
   };
+  CardDetail: {
+    id: string;
+    cardName: string;
+    cardNumber: string;
+    frontImageUri: string;
+    backImageUri: string;
+    createdAt: string;
+    updatedAt: string;
+  };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
