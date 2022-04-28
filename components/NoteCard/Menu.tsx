@@ -7,9 +7,12 @@ import { NoteMenuProps } from "./types";
 import { useAppDispatch } from "../../redux/hooks";
 import copyToClipboard from "../../utils/copyToClipboard";
 import { deleteNote } from "../../redux/features/addNote/addNoteSlice";
+import { useNavigation } from "@react-navigation/native";
+import { AntDesign } from "@expo/vector-icons";
 
 const Menu = ({ visible, setVisible, theme, note, id }: NoteMenuProps) => {
   const dispatch = useAppDispatch();
+  const navigation = useNavigation();
 
   return (
     <Dialog
@@ -40,16 +43,29 @@ const Menu = ({ visible, setVisible, theme, note, id }: NoteMenuProps) => {
         />
         {/* @ts-ignore */}
         <List.Item
+          title="Edit"
+          left={(props) => (
+            <List.Icon {...props} icon="content-edit" color={theme.tint} />
+          )}
+          onPress={() => {
+            setVisible(false);
+            copyToClipboard(note);
+          }}
+          rippleColor="#C4C4C4"
+          titleStyle={{ color: theme.text }}
+        />
+        {/* @ts-ignore */}
+        <List.Item
           title="Delete"
           left={(props) => (
-            <List.Icon {...props} icon="trash-can-outline" color={theme.tint} />
+            <List.Icon {...props} icon="trash-can-outline" color="red" />
           )}
           onPress={() => {
             setVisible(false);
             dispatch(deleteNote(id));
           }}
-          rippleColor="#C4C4C4"
-          titleStyle={{ color: theme.text }}
+          rippleColor="#fee2e2"
+          titleStyle={{ color: "red" }}
         />
       </View>
     </Dialog>

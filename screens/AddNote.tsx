@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import { RootStackScreenProps } from "../types";
 import { saveNote } from "../redux/features/addNote/addNoteSlice";
 
-const AddNote = ({}: RootStackScreenProps<"AddNote">) => {
+const AddNote = ({ route }: RootStackScreenProps<"AddNote">) => {
   const isDarkMode = useAppSelector((state) => state.appTheme.isDark);
   const theme = useTheme();
   const dispatch = useAppDispatch();
@@ -27,7 +27,7 @@ const AddNote = ({}: RootStackScreenProps<"AddNote">) => {
         backgroundColor={theme.background}
       />
       <View style={{ ...styles.container, backgroundColor: theme.background }}>
-        <AddNoteInput theme={theme} isDarkMode={isDarkMode} />
+        <AddNoteInput theme={theme} isDarkMode={isDarkMode} route={route} />
       </View>
     </>
   );

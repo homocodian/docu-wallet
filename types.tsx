@@ -30,7 +30,13 @@ export type RootStackParamList = {
         screenTitle: string;
       }
     | undefined;
-  AddNote: undefined;
+  AddNote:
+    | {
+        id: string;
+        title: string;
+        note: string;
+      }
+    | undefined;
   DocumentDetail: {
     id: string;
     name: string;

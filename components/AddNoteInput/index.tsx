@@ -9,20 +9,24 @@ import {
 import dayjs from "dayjs";
 
 import { Divider } from "@react-native-material/core";
-import { AppTheme } from "../../types";
+import { AppTheme, RootStackParamList } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
   setNoteText,
   setTitleText,
 } from "../../redux/features/addNote/addNoteSlice";
 import { styles } from "./styles";
+import { RouteProp } from "@react-navigation/native";
+import { useEffect } from "react";
 
 const AddNoteInput = ({
   theme,
   isDarkMode,
+  route,
 }: {
   theme: AppTheme;
   isDarkMode: boolean;
+  route: RouteProp<RootStackParamList, "AddNote">;
 }) => {
   const { titleText, noteText } = useAppSelector((state) => state.addNote);
   const dispatch = useAppDispatch();
@@ -34,6 +38,13 @@ const AddNoteInput = ({
   const onNoteTextChage = (text: string) => {
     dispatch(setNoteText({ note: text }));
   };
+
+  useEffect(() => {
+    if (route.params) {
+      dispatch(setTitleText(route.params.title));
+      dispatch(setNoteText(route.params.note));
+    }
+  }, []);
 
   return (
     <>
