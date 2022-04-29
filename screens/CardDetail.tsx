@@ -13,7 +13,8 @@ import AlertSnackbar from "../components/Snackbars/AlertSnackbar";
 let message = "";
 
 function CardDetail({ navigation, route }: RootStackScreenProps<"CardDetail">) {
-  const { id, cardName, cardNumber, createdAt } = route.params;
+  const { id, cardName, cardNumber, createdAt, frontImageUri, backImageUri } =
+    route.params;
   const theme = useTheme();
   const [visible, setVisible] = useState(false);
 
@@ -27,6 +28,16 @@ function CardDetail({ navigation, route }: RootStackScreenProps<"CardDetail">) {
     }
   };
 
+  const editCard = () => {
+    navigation.replace("AddCard", {
+      id,
+      cardName,
+      cardNumber,
+      frontImageUri,
+      backImageUri,
+    });
+  };
+
   return (
     <View style={{ ...styles.container, backgroundColor: theme.background }}>
       <ThemedStatusBar />
@@ -34,7 +45,11 @@ function CardDetail({ navigation, route }: RootStackScreenProps<"CardDetail">) {
       <View style={{ marginTop: 30 }}>
         {/* edit button */}
         <Divider style={{ height: 2 }} />
-        <Pressable style={styles.editButton} pressEffectColor="#ccc">
+        <Pressable
+          style={styles.editButton}
+          pressEffectColor="#ccc"
+          onPress={editCard}
+        >
           {/* @ts-ignore */}
           <AntDesign name="edit" size={24} color={theme.tint} />
           <Text style={{ ...styles.editButtonText, color: theme.text }}>

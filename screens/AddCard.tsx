@@ -24,13 +24,31 @@ import getFileExt from "../utils/getFileExt";
 import { RootStackScreenProps } from "../types";
 
 type ImageInfo = {
-  front: ImagePicker.ImageInfo | null;
-  back: ImagePicker.ImageInfo | null;
+  front: {
+    uri: string;
+    width?: number;
+    height?: number;
+    type?: "image" | "video" | undefined;
+    exif?: Record<string, any> | undefined;
+    base64?: string | undefined;
+    duration?: number | undefined;
+    cancelled: boolean;
+  } | null;
+  back: {
+    uri: string;
+    width?: number;
+    height?: number;
+    type?: "image" | "video" | undefined;
+    exif?: Record<string, any> | undefined;
+    base64?: string | undefined;
+    duration?: number | undefined;
+    cancelled: boolean;
+  } | null;
 };
 
 let message = "Permissin is required";
 
-const AddCard = ({ navigation }: RootStackScreenProps<"AddCard">) => {
+const AddCard = ({ navigation, route }: RootStackScreenProps<"AddCard">) => {
   const theme = useTheme();
   const isDarkMode = useAppSelector((state) => state.appTheme.isDark);
 
@@ -39,13 +57,23 @@ const AddCard = ({ navigation }: RootStackScreenProps<"AddCard">) => {
   const [loading, setLoading] = useState(false);
 
   const [cardTextInfo, setCardTextInfo] = useState({
-    cardName: "",
-    cardNumber: "",
+    cardName: route.params ? route.params.cardName : "",
+    cardNumber: route.params ? route.params.cardNumber : "",
   });
 
   const [imagesInfo, setImageInfo] = useState<ImageInfo>({
-    front: null,
-    back: null,
+    front: route.params
+      ? {
+          uri: `file:///${route.params.frontImageUri}`,
+          cancelled: false,
+        }
+      : null,
+    back: route.params
+      ? {
+          uri: `file:///${route.params.backImageUri}`,
+          cancelled: false,
+        }
+      : null,
   });
 
   const openPicker = useCallback(async (imageSide: "front" | "back") => {
@@ -77,6 +105,42 @@ const AddCard = ({ navigation }: RootStackScreenProps<"AddCard">) => {
     }));
   };
 
+  const getImageFileUri = async ({
+    frontImageUri,
+    backImageUri,
+  }: {
+    frontImageUri: string;
+    backImageUri: string;
+  }) => {
+    const path =
+      (await RNFetchBlog.android.getSDCardApplicationDir()) + "/cards";
+
+    const frontImageNameExt = getFileExt(frontImageUri);
+    const backImageNameExt = getFileExt(backImageUri);
+
+    const frontFileName =
+      path + `/${(Date.now() + 10).toString()}.${frontImageNameExt}`;
+    const backFileName =
+      path + `/${(Date.now() + 15).toString()}.${backImageNameExt}`;
+
+    const frontBase64 = await RNFetchBlog.fs.readFile(frontImageUri, "base64");
+
+    const backBase64 = await RNFetchBlog.fs.readFile(backImageUri, "base64");
+
+    // check if folder exists
+    if (!(await RNFetchBlog.fs.isDir(path))) {
+      await RNFetchBlog.fs.mkdir(path);
+    }
+
+    // create file in cards folder
+    await Promise.all([
+      RNFetchBlog.fs.createFile(frontFileName, frontBase64, "base64"),
+      RNFetchBlog.fs.createFile(backFileName, backBase64, "base64"),
+    ]);
+
+    return { frontImageUri: frontFileName, backImageUri: backFileName };
+  };
+
   const addCard = useCallback(async () => {
     if (
       cardTextInfo.cardName === "" ||
@@ -99,45 +163,49 @@ const AddCard = ({ navigation }: RootStackScreenProps<"AddCard">) => {
         return;
       }
 
-      const path =
-        (await RNFetchBlog.android.getSDCardApplicationDir()) + "/cards";
-
-      const frontImageNameExt = getFileExt(imagesInfo.front.uri);
-      const backImageNameExt = getFileExt(imagesInfo.back.uri);
-
-      const frontFileName =
-        path + `/${(Date.now() + 10).toString()}.${frontImageNameExt}`;
-      const backFileName =
-        path + `/${(Date.now() + 15).toString()}.${backImageNameExt}`;
-
-      const frontBase64 = await RNFetchBlog.fs.readFile(
-        imagesInfo.front?.uri,
-        "base64"
-      );
-
-      const backBase64 = await RNFetchBlog.fs.readFile(
-        imagesInfo.back?.uri,
-        "base64"
-      );
-
-      // check if folder exists
-      if (!(await RNFetchBlog.fs.isDir(path))) {
-        await RNFetchBlog.fs.mkdir(path);
+      if (
+        route.params &&
+        route.params.frontImageUri ===
+          imagesInfo.front.uri.split("/").slice(3).join("/") &&
+        route.params.backImageUri ===
+          imagesInfo.back.uri.split("/").slice(3).join("/")
+      ) {
+        const { id, backImageUri, frontImageUri } = route.params;
+        await cardDao.updateCard({
+          id,
+          cardName: cardTextInfo.cardName,
+          cardNumber: cardTextInfo.cardNumber,
+          frontImageUri,
+          backImageUri,
+        });
+        setLoading(false);
+        navigation.goBack();
+        return;
       }
 
-      // create file in cards folder
-      await Promise.all([
-        RNFetchBlog.fs.createFile(frontFileName, frontBase64, "base64"),
-        RNFetchBlog.fs.createFile(backFileName, backBase64, "base64"),
-      ]);
-
-      // add card
-      await cardDao.createCard({
-        cardName: cardTextInfo.cardName,
-        cardNumber: cardTextInfo.cardNumber,
-        frontImageUri: frontFileName,
-        backImageUri: backFileName,
+      const { frontImageUri, backImageUri } = await getImageFileUri({
+        frontImageUri: imagesInfo.front.uri,
+        backImageUri: imagesInfo.back.uri,
       });
+
+      if (route.params) {
+        const { id } = route.params;
+        await cardDao.updateCard({
+          id,
+          cardName: cardTextInfo.cardName,
+          cardNumber: cardTextInfo.cardNumber,
+          frontImageUri,
+          backImageUri,
+        });
+      } else {
+        // add card
+        await cardDao.createCard({
+          cardName: cardTextInfo.cardName,
+          cardNumber: cardTextInfo.cardNumber,
+          frontImageUri: frontImageUri,
+          backImageUri: backImageUri,
+        });
+      }
 
       setLoading(false);
       navigation.goBack();
@@ -278,7 +346,7 @@ const AddCard = ({ navigation }: RootStackScreenProps<"AddCard">) => {
             <Text
               style={{ color: theme.text, fontSize: 16, fontWeight: "600" }}
             >
-              Save Card
+              {route.params ? "Save Changes" : "Save Card"}
             </Text>
           )}
         </Pressable>

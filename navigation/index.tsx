@@ -84,7 +84,12 @@ function RootNavigator() {
         component={AddCard}
         options={{
           headerShown: true,
-          header: (props) => <NavHeader title="Add Card" headerProps={props} />,
+          header: (props) => (
+            <NavHeader
+              title={props.route.params ? "Update Card" : "Add Card"}
+              headerProps={props}
+            />
+          ),
         }}
       />
       <Stack.Screen

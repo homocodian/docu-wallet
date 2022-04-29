@@ -65,6 +65,7 @@ const AddNoteInput = ({
         <TextInput
           placeholder="Note"
           multiline
+          underlineColorAndroid="transparent"
           style={{ ...styles.noteInput, color: theme.text }}
           placeholderTextColor={"#C4C4C4"}
           onChangeText={(text) => dispatch(setNoteText(text))}

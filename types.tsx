@@ -19,7 +19,15 @@ export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
   NotFound: undefined;
-  AddCard: undefined;
+  AddCard:
+    | {
+        id: string;
+        cardName: string;
+        cardNumber: string;
+        frontImageUri: string;
+        backImageUri: string;
+      }
+    | undefined;
   AddDocument:
     | {
         id: string;

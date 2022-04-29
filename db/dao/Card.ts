@@ -29,4 +29,25 @@ export default {
       card.destroyPermanently();
     });
   },
+  updateCard: async (body: {
+    id: string;
+    cardName: string;
+    cardNumber: string;
+    frontImageUri: string;
+    backImageUri: string;
+  }) => {
+    return await database.write(async () => {
+      const card = database.get("cards").find(body.id);
+      (await card).update((cardToBeUpdated) => {
+        // @ts-ignore
+        cardToBeUpdated.cardName = body.cardName;
+        // @ts-ignore
+        cardToBeUpdated.cardNumber = body.cardNumber;
+        // @ts-ignore
+        cardToBeUpdated.frontImageUri = body.frontImageUri;
+        // @ts-ignore
+        cardToBeUpdated.backImageUri = body.backImageUri;
+      });
+    });
+  },
 };

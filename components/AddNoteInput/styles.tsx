@@ -9,5 +9,6 @@ export const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "600",
     paddingTop: 15,
+    borderBottomWidth: 0,
   },
 });
