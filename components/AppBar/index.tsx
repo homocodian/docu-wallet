@@ -11,10 +11,9 @@ import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import useTheme from "../../hooks/useTheme";
 import Menu from "../Menu";
 
-const AppBar = (_props: NativeStackHeaderProps) => {
+const AppBar = ({ navigation }: NativeStackHeaderProps) => {
   const theme = useTheme();
   const [visible, setVisible] = useBoolean(false);
-
   return (
     <SafeAreaView>
       <DefaultAppBar
@@ -26,13 +25,16 @@ const AppBar = (_props: NativeStackHeaderProps) => {
         tintColor={theme.tint}
         trailing={(props) => (
           <HStack>
+            {/* search button */}
             <IconButton
               icon={(props) => (
                 // @ts-ignore
                 <AntDesign name="search1" {...props} />
               )}
               {...props}
+              onPress={() => navigation.navigate("Search")}
             />
+            {/* Menu */}
             <Menu
               button={
                 <IconButton

@@ -1,4 +1,5 @@
 import { database } from "../db";
+import { Q } from "@nozbe/watermelondb";
 
 const cards = database.collections.get("cards");
 
@@ -11,7 +12,7 @@ export default {
     backImageUri: string;
   }) => {
     return await database.write(async () => {
-      await database.get("cards").create((card) => {
+      await cards.create((card) => {
         // @ts-ignore
         card.cardName = body.cardName;
         // @ts-ignore
@@ -25,7 +26,7 @@ export default {
   },
   deleteCard: async (id: string) => {
     return await database.write(async () => {
-      const card = await database.get("cards").find(id);
+      const card = await cards.find(id);
       card.destroyPermanently();
     });
   },
@@ -37,7 +38,7 @@ export default {
     backImageUri: string;
   }) => {
     return await database.write(async () => {
-      const card = database.get("cards").find(body.id);
+      const card = cards.find(body.id);
       (await card).update((cardToBeUpdated) => {
         // @ts-ignore
         cardToBeUpdated.cardName = body.cardName;
@@ -49,5 +50,10 @@ export default {
         cardToBeUpdated.backImageUri = body.backImageUri;
       });
     });
+  },
+  search: async (text: string) => {
+    return cards.query(
+      Q.where("card_name", Q.like(`%${Q.sanitizeLikeString(text)}%`))
+    );
   },
 };

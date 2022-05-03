@@ -1,4 +1,5 @@
 import { database } from "../db";
+import { Q } from "@nozbe/watermelondb";
 
 const notes = database.collections.get("notes");
 
@@ -30,5 +31,10 @@ export default {
           (noteToBeUpdated.note = body.note);
       });
     });
+  },
+  search: async (text: string) => {
+    return notes.query(
+      Q.where("title", Q.like(`%${Q.sanitizeLikeString(text)}%`))
+    );
   },
 };

@@ -11,17 +11,13 @@ import { styles } from "./styles";
 import documentDao from "../../db/dao/Document";
 import { AppTheme } from "../../types";
 
-const DocumentList = ({ theme, documents, navigation }: DocumentListProps) => {
+const DocumentList = ({ theme, documents }: DocumentListProps) => {
   return (
     <View style={styles.container}>
       <FlatList
         data={documents}
         renderItem={({ item }) => (
-          <DocumentCard
-            theme={theme}
-            documents={item}
-            navigation={navigation}
-          />
+          <DocumentCard theme={theme} documents={item} />
         )}
         keyExtractor={(data) => data.id}
         showsVerticalScrollIndicator={false}

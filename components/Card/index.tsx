@@ -10,7 +10,7 @@ import { styles } from "./styles";
 import { shareCard, copyToClipboard } from "../../utils/";
 import { useNavigation } from "@react-navigation/native";
 
-function Card({
+export function Card({
   theme,
   item: {
     id,

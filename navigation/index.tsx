@@ -30,6 +30,7 @@ import { StatusBar } from "expo-status-bar";
 import DocumentDetail from "../screens/DocumentDetail";
 import ShowImages from "../screens/ShowImages";
 import CardDetail from "../screens/CardDetail";
+import Search from "../screens/Search";
 
 export default function Navigation({
   ColorScheme,
@@ -144,6 +145,14 @@ function RootNavigator() {
         component={ShowImages}
         options={{
           headerShown: false,
+        }}
+      />
+      <Stack.Screen
+        name="Search"
+        component={Search}
+        options={{
+          headerShown: false,
+          header: (props) => <NavHeader title="" back headerProps={props} />,
         }}
       />
       <Stack.Screen

@@ -1,4 +1,5 @@
 import { database } from "../db";
+import { Q } from "@nozbe/watermelondb";
 
 const documents = database.collections.get("documents");
 
@@ -49,5 +50,10 @@ export default {
           (doc.fileUri = body.fileUri);
       });
     });
+  },
+  search: async (text: string) => {
+    return documents.query(
+      Q.where("name", Q.like(`%${Q.sanitizeLikeString(text)}%`))
+    );
   },
 };

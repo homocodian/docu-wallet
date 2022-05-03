@@ -9,7 +9,6 @@ export const styles = StyleSheet.create({
     marginTop: 10,
   },
   cardHeader: {
-    flex: 1,
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",

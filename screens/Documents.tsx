@@ -10,7 +10,6 @@ function Documents({ navigation }: RootTabScreenProps<"Cards">) {
 
   return (
     <Fragment>
-      {/* @ts-ignore */}
       <DocumentList theme={theme} navigation={navigation} />
       {/* fab button */}
       <FAB theme={theme} onPress={() => navigation.navigate("AddDocument")} />

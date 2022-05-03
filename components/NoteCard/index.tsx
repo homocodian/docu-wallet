@@ -9,7 +9,7 @@ import { NoteCardProps } from "./types";
 import Menu from "./Menu";
 import { styles } from "./styles";
 
-const NoteCard = ({ theme, item }: NoteCardProps) => {
+export const NoteCard = ({ theme, item }: NoteCardProps) => {
   const [visible, setVisible] = useState(false);
 
   return (
@@ -32,7 +32,7 @@ const NoteCard = ({ theme, item }: NoteCardProps) => {
             onPress={() => setVisible(true)}
           />
         </View>
-        <View style={{ flex: 1 }}>
+        <View>
           <Text color={theme.text} ellipsizeMode="tail" numberOfLines={7}>
             {item.note}
           </Text>

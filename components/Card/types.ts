@@ -24,15 +24,17 @@ export type ChooseDialogProps = {
   captureImageAsync: () => Promise<void>;
 };
 
+export type CardItem = {
+  id: string;
+  cardName: string;
+  cardNumber: string;
+  frontImageUri: string;
+  backImageUri: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 export type CardProps = {
   theme: Theme;
-  item: {
-    id: string;
-    cardName: string;
-    cardNumber: string;
-    frontImageUri: string;
-    backImageUri: string;
-    createdAt: Date;
-    updatedAt: Date;
-  };
+  item: CardItem;
 };

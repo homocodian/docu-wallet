@@ -1,4 +1,4 @@
-import { FlatList, ListRenderItemInfo, View } from "react-native";
+import { FlatList, View } from "react-native";
 
 import { Caption } from "react-native-paper";
 import WithObservables from "@nozbe/with-observables";

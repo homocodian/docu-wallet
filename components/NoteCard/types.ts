@@ -7,14 +7,17 @@ export type NoteCard = {
   title: string;
 };
 
+export type NoteCardItem = {
+  id: string;
+  note: string;
+  title: string;
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 export type NoteCardProps = {
   theme: Theme;
-  item: {
-    id: string;
-    note: string;
-    title: string;
-    createdAt: Date;
-  };
+  item: NoteCardItem;
 };
 
 export type NoteMenuProps = {

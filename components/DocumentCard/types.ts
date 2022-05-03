@@ -1,11 +1,6 @@
-import { MaterialTopTabNavigationProp } from "@react-navigation/material-top-tabs";
-import { CompositeNavigationProp } from "@react-navigation/native";
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-
 import { Theme } from "../Card/types";
-import { RootStackParamList, RootTabParamList } from "../../types";
 
-export type CardItem = {
+export type DocCardItem = {
   id: string;
   name: string;
   uid: string;
@@ -18,13 +13,5 @@ export type CardItem = {
 
 export type DocumentProps = {
   theme: Theme;
-  item: CardItem;
-  navigation: CompositeNavigationProp<
-    MaterialTopTabNavigationProp<RootTabParamList, "Cards", undefined>,
-    NativeStackNavigationProp<
-      RootStackParamList,
-      keyof RootStackParamList,
-      undefined
-    >
-  >;
+  item: DocCardItem;
 };

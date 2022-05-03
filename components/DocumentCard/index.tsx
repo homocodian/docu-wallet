@@ -15,8 +15,10 @@ import { Fragment } from "react";
 import { DocumentProps } from "./types";
 import { copyToClipboard, shareCard } from "../../utils";
 import { styles } from "./styles";
+import { useNavigation } from "@react-navigation/native";
 
-function DocumentCard({ theme, item, navigation }: DocumentProps) {
+export function DocumentCard({ theme, item }: DocumentProps) {
+  const navigation = useNavigation();
   //  share card
   const share = () => {
     if (!item.fileUri) {

@@ -69,6 +69,7 @@ export type RootStackParamList = {
     createdAt: string;
     updatedAt: string;
   };
+  Search: undefined;
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
