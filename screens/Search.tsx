@@ -18,7 +18,7 @@ const Search = ({ navigation }: RootStackScreenProps<"Search">) => {
         backgroundColor: theme.background,
       }}
     >
-      <ThemedStatusBar />
+      <ThemedStatusBar bgColor={theme.background} />
       <SearchComponent
         navigation={navigation}
         theme={theme}

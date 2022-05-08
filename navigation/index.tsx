@@ -8,36 +8,29 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import { StatusBar } from "expo-status-bar";
 
 import Cards from "../screens/Cards";
 import Notes from "../screens/Notes";
+import Search from "../screens/Search";
 import AddNote from "../screens/AddNote";
 import AddCard from "../screens/AddCard";
 import Colors from "../constants/Colors";
 import useTheme from "../hooks/useTheme";
 import AppBar from "../components/AppBar";
 import Documents from "../screens/Documents";
+import CardDetail from "../screens/CardDetail";
+import ShowImages from "../screens/ShowImages";
+import { useAppSelector } from "../redux/hooks";
 import NavHeader from "../components/NavHeader";
 import ModalScreen from "../screens/ModalScreen";
 import AddDocument from "../screens/AddDocument";
 import NotFoundScreen from "../screens/NotFoundScreen";
+import DocumentDetail from "../screens/DocumentDetail";
 import LinkingConfiguration from "./LinkingConfiguration";
 import { RootStackParamList, RootTabParamList } from "../types";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
-import { getIsDark } from "../redux/features/appTheme/appThemeSlice";
-import { NativeColorScheme } from "../redux/features/appTheme/types";
-import { StatusBar } from "expo-status-bar";
-import DocumentDetail from "../screens/DocumentDetail";
-import ShowImages from "../screens/ShowImages";
-import CardDetail from "../screens/CardDetail";
-import Search from "../screens/Search";
 
-export default function Navigation({
-  ColorScheme,
-}: {
-  ColorScheme: NativeColorScheme;
-}) {
-  const dispatch = useAppDispatch();
+export default function Navigation() {
   const isDarkMode = useAppSelector((state) => state.appTheme.isDark);
 
   const darkTheme = {
@@ -47,10 +40,6 @@ export default function Navigation({
       background: Colors.dark.background,
     },
   };
-
-  React.useEffect(() => {
-    dispatch(getIsDark(ColorScheme));
-  }, []);
 
   return (
     <NavigationContainer

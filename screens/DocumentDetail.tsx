@@ -43,7 +43,7 @@ function DocumentDetail({
 
   return (
     <View style={{ ...styles.container, backgroundColor: theme.background }}>
-      <ThemedStatusBar />
+      <ThemedStatusBar bgColor={theme.background} />
 
       <View style={{ marginTop: 30 }}>
         {/* edit button */}

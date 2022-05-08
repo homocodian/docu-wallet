@@ -4,12 +4,10 @@ import { Provider as ReduxProvider } from "react-redux";
 
 import Navigation from "./navigation";
 import { store } from "./redux/store";
-import useColorScheme from "./hooks/useColorScheme";
 import useCachedResources from "./hooks/useCachedResources";
 
 export default function App() {
   const isLoadingComplete = useCachedResources();
-  const ColorScheme = useColorScheme();
 
   if (!isLoadingComplete) {
     return null;
@@ -18,7 +16,7 @@ export default function App() {
       <SafeAreaProvider>
         <ReduxProvider store={store}>
           <ReactNativePaperProvider>
-            <Navigation ColorScheme={ColorScheme} />
+            <Navigation />
           </ReactNativePaperProvider>
         </ReduxProvider>
       </SafeAreaProvider>

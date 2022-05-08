@@ -21,12 +21,33 @@ const ChooseAppearance = ({
   const theme = useTheme();
 
   const onValueChange = (value: Appearance) => {
-    dispatch(
-      setAppAppearance({
-        appearance: value,
-        nativeColorScheme,
-      })
-    );
+    switch (value) {
+      case "light":
+        dispatch(
+          setAppAppearance({
+            isDark: false,
+            appearance: "light",
+          })
+        );
+        break;
+      case "dark":
+        dispatch(
+          setAppAppearance({
+            isDark: true,
+            appearance: "dark",
+          })
+        );
+        break;
+
+      default:
+        dispatch(
+          setAppAppearance({
+            isDark: nativeColorScheme === "dark" ? true : false,
+            appearance: "system",
+          })
+        );
+        break;
+    }
   };
 
   return (
