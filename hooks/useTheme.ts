@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import Colors from "../constants/Colors";
 import { setDarkMode } from "../redux/features/appTheme/appThemeSlice";
@@ -11,8 +11,10 @@ function useTheme() {
   const colorScheme = useColorScheme();
   const dispatch = useAppDispatch();
 
+  const memoizedAppearance = useMemo(() => appearance, [appearance]);
+
   useEffect(() => {
-    if (appearance === "system") {
+    if (memoizedAppearance === "system") {
       const colorTheme = colorScheme === "dark" ? Colors.dark : Colors.light;
       setTheme(colorTheme);
       dispatch(setDarkMode(colorScheme === "dark" ? true : false));
@@ -23,7 +25,7 @@ function useTheme() {
     } else {
       setTheme(Colors.light);
     }
-  }, [isDark, colorScheme, appearance]);
+  }, [isDark, colorScheme, memoizedAppearance]);
 
   return theme;
 }
