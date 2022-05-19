@@ -60,12 +60,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 function RootNavigator() {
   return (
     // @ts-ignore
-    <Stack.Navigator
-      defaultScreenOptions={{
-        animation: "slide_from_bottom",
-        statusBarAnimation: "slide",
-      }}
-    >
+    <Stack.Navigator>
       <Stack.Screen
         name="Root"
         component={TopTabNavigator}
